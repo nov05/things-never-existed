@@ -474,7 +474,7 @@ footer {
     font-size: 64px;
     line-height: 1;
     /* Move the character slightly upward for visual centering. */
-    transform: translateY(-12px);
+    transform: translateY(-4px);
 }
 
 .modal-close:hover {
