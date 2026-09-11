@@ -2,6 +2,7 @@ const PAGE_SIZE = 20;
 
 let videos = [];
 let filteredVideos = [];
+
 let selectedSeries = "ALL";
 let currentPage = 1;
 
@@ -53,10 +54,10 @@ async function loadVideos() {
         console.error("Failed to load videos:", error);
 
         videosContainer.innerHTML = `
-            <div class="empty-state">
-                Unable to load videos.
-            </div>
-        `;
+      <div class="empty-state">
+        Unable to load videos.
+      </div>
+    `;
     }
 }
 
@@ -119,7 +120,6 @@ function applyFilters() {
     filteredVideos = videos.filter(video => {
 
         /* Series filter */
-
         if (
             selectedSeries !== "ALL" &&
             String(video.series || "").trim() !== selectedSeries
@@ -127,13 +127,10 @@ function applyFilters() {
             return false;
         }
 
-
         /* Free-text search */
-
         if (query) {
             const searchableText = Object.values(video)
                 .map(value => {
-
                     if (Array.isArray(value)) {
                         return value.join(" ");
                     }
@@ -193,10 +190,10 @@ function renderVideos() {
 
     if (pageVideos.length === 0) {
         videosContainer.innerHTML = `
-            <div class="empty-state">
-                No videos found.
-            </div>
-        `;
+      <div class="empty-state">
+        No videos found.
+      </div>
+    `;
 
         return;
     }
@@ -216,68 +213,35 @@ function createVideoCard(video) {
 
     card.className = "video-card";
 
-
-    /* =========================
-       Thumbnail Wrapper
-    ========================= */
-
-    const thumbnailWrapper = document.createElement("div");
-
-    thumbnailWrapper.className = "thumbnail-wrapper";
-
-
-    /* =========================
-       YouTube Thumbnail
-    ========================= */
-
     const thumbnail = document.createElement("img");
 
     thumbnail.className = "video-thumbnail";
     thumbnail.alt = video.title || "";
 
-
-    /* =========================
-       Fallback
-    ========================= */
-
     const fallback = document.createElement("div");
 
     fallback.className = "thumbnail-fallback";
-
 
     const fallbackLogo = document.createElement("img");
 
     fallbackLogo.src = "assets/logo.png";
     fallbackLogo.alt = "";
 
-
     fallback.appendChild(fallbackLogo);
-
-
-    /* =========================
-       YouTube ID
-    ========================= */
 
     const videoId = getYouTubeId(video);
 
-
     if (videoId) {
-
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
 
         thumbnail.addEventListener(
             "error",
             () => {
-
                 /*
-                  First fallback:
-                  Try hqdefault.
+                  First fallback: hqdefault
                 */
-
                 if (!thumbnail.dataset.hqTried) {
-
                     thumbnail.dataset.hqTried = "true";
 
                     thumbnail.src =
@@ -286,62 +250,33 @@ function createVideoCard(video) {
                     return;
                 }
 
-
                 /*
                   Second fallback:
-                  Header background + logo.
+                  header background + logo
                 */
-
                 thumbnail.style.display = "none";
-
                 fallback.style.display = "flex";
             },
             { once: false }
         );
 
     } else {
-
         thumbnail.style.display = "none";
-
         fallback.style.display = "flex";
     }
-
-
-    /*
-      Put thumbnail and fallback
-      inside the 3:4 wrapper.
-    */
-
-    thumbnailWrapper.appendChild(thumbnail);
-    thumbnailWrapper.appendChild(fallback);
-
-
-    /* =========================
-       Title
-    ========================= */
 
     const title = document.createElement("h3");
 
     title.className = "video-title";
     title.textContent = video.title || "";
 
-
-    /* =========================
-       Card
-    ========================= */
-
-    card.appendChild(thumbnailWrapper);
+    card.appendChild(thumbnail);
+    card.appendChild(fallback);
     card.appendChild(title);
-
-
-    /*
-      Entire card is clickable.
-    */
 
     card.addEventListener("click", () => {
         openVideo(video);
     });
-
 
     return card;
 }
@@ -352,24 +287,11 @@ function createVideoCard(video) {
 ========================= */
 
 function getYouTubeId(video) {
-
-    /*
-      Preferred field:
-      YouTube ID only.
-    */
-
     if (video.youtube_id) {
         return String(video.youtube_id).trim();
     }
 
-
-    /*
-      Backward compatibility:
-      Full YouTube URL.
-    */
-
     if (video.youtube) {
-
         const value = String(video.youtube).trim();
 
         const match = value.match(
@@ -390,20 +312,17 @@ function getYouTubeId(video) {
 ========================= */
 
 function openVideo(video) {
-
     const videoId = getYouTubeId(video);
 
     if (!videoId) {
         return;
     }
 
-
     /*
       iframe is created ONLY after clicking.
     */
 
     playerContainer.innerHTML = "";
-
 
     const iframe = document.createElement("iframe");
 
@@ -418,12 +337,9 @@ function openVideo(video) {
 
     iframe.allowFullscreen = true;
 
-
     playerContainer.appendChild(iframe);
 
-
     modal.classList.add("open");
-
     modal.setAttribute("aria-hidden", "false");
 
     document.body.style.overflow = "hidden";
@@ -435,59 +351,38 @@ function openVideo(video) {
 ========================= */
 
 function closeVideo() {
-
     modal.classList.remove("open");
-
     modal.setAttribute("aria-hidden", "true");
-
 
     /*
       Destroy iframe when closing.
     */
-
     playerContainer.innerHTML = "";
 
     document.body.style.overflow = "";
 }
 
 
-modalClose.addEventListener(
-    "click",
-    closeVideo
-);
-
+modalClose.addEventListener("click", closeVideo);
 
 modal.querySelector(".modal-backdrop")
-    .addEventListener(
-        "click",
-        closeVideo
-    );
+    .addEventListener("click", closeVideo);
 
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (event.key === "Escape") {
-            closeVideo();
-        }
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeVideo();
     }
-);
+});
 
 
 /* =========================
    Search
 ========================= */
 
-searchInput.addEventListener(
-    "input",
-    () => {
-
-        currentPage = 1;
-
-        applyFilters();
-    }
-);
+searchInput.addEventListener("input", () => {
+    currentPage = 1;
+    applyFilters();
+});
 
 
 /* =========================
@@ -495,24 +390,17 @@ searchInput.addEventListener(
 ========================= */
 
 function renderPagination() {
-
     paginationContainer.innerHTML = "";
-
 
     const totalPages = Math.ceil(
         filteredVideos.length / PAGE_SIZE
     );
 
-
     if (totalPages <= 1) {
         return;
     }
 
-
-    /* =========================
-       Previous
-    ========================= */
-
+    /* Previous */
     const previous = createPageButton(
         "‹",
         currentPage - 1,
@@ -522,30 +410,19 @@ function renderPagination() {
     paginationContainer.appendChild(previous);
 
 
-    /* =========================
-       Page Numbers
-    ========================= */
-
     /*
-      Small number of pages:
-
+      Show page numbers.
+  
+      For a small number of pages:
       1 2 3 4 5
-
-      Many pages:
-
+  
+      For many pages:
       1 ... 4 5 6 ... 20
     */
-
-    const pages = getVisiblePages(
-        totalPages,
-        currentPage
-    );
-
+    const pages = getVisiblePages(totalPages, currentPage);
 
     pages.forEach(page => {
-
         if (page === "...") {
-
             const dots = document.createElement("span");
 
             dots.textContent = "…";
@@ -557,27 +434,21 @@ function renderPagination() {
             return;
         }
 
-
         const button = createPageButton(
             String(page),
             page,
             false
         );
 
-
         if (page === currentPage) {
             button.classList.add("current");
         }
-
 
         paginationContainer.appendChild(button);
     });
 
 
-    /* =========================
-       Next
-    ========================= */
-
+    /* Next */
     const next = createPageButton(
         "›",
         currentPage + 1,
@@ -588,107 +459,58 @@ function renderPagination() {
 }
 
 
-/* =========================
-   Create Page Button
-========================= */
-
-function createPageButton(
-    label,
-    page,
-    disabled
-) {
-
+function createPageButton(label, page, disabled) {
     const button = document.createElement("button");
 
     button.type = "button";
     button.className = "page-button";
-
     button.textContent = label;
-
     button.disabled = disabled;
 
+    button.addEventListener("click", () => {
+        currentPage = page;
 
-    button.addEventListener(
-        "click",
-        () => {
+        renderVideos();
+        renderPagination();
 
-            currentPage = page;
-
-            renderVideos();
-            renderPagination();
-
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    );
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
 
     return button;
 }
 
 
-/* =========================
-   Visible Pages
-========================= */
-
-function getVisiblePages(
-    totalPages,
-    current
-) {
-
+function getVisiblePages(totalPages, current) {
     if (totalPages <= 7) {
-
         return Array.from(
-            {
-                length: totalPages
-            },
+            { length: totalPages },
             (_, index) => index + 1
         );
     }
 
-
     const pages = [];
 
-
     pages.push(1);
-
 
     if (current > 4) {
         pages.push("...");
     }
 
+    const start = Math.max(2, current - 1);
+    const end = Math.min(totalPages - 1, current + 1);
 
-    const start = Math.max(
-        2,
-        current - 1
-    );
-
-
-    const end = Math.min(
-        totalPages - 1,
-        current + 1
-    );
-
-
-    for (
-        let page = start;
-        page <= end;
-        page++
-    ) {
+    for (let page = start; page <= end; page++) {
         pages.push(page);
     }
-
 
     if (current < totalPages - 3) {
         pages.push("...");
     }
 
-
     pages.push(totalPages);
-
 
     return pages;
 }
@@ -699,67 +521,3 @@ function getVisiblePages(
 ========================= */
 
 loadVideos();
-```
-
-### 配套 CSS
-
-**这里很重要：上面的 JS 增加了 `.thumbnail - wrapper`，所以你现有 CSS 里 thumbnail 那一段也需要对应替换。**
-
-把原来的 `.video - thumbnail` / `.thumbnail - fallback` 相关部分换成：
-
-```css
-    .thumbnail - wrapper {
-    position: relative;
-    width: 100 %;
-    aspect - ratio: 3 / 4;
-    overflow: hidden;
-    border - radius: 8px;
-}
-
-.video - thumbnail {
-    position: absolute;
-
-    /*
-      YouTube thumbnail 本身是 16:9。
-
-      高度撑满 3:4 card，
-      左右超出的部分由 wrapper 裁掉。
-    */
-
-    height: 100 %;
-    width: auto;
-
-    left: 50 %;
-    top: 50 %;
-
-    transform: translate(-50 %, -50 %);
-
-    object - fit: cover;
-}
-
-.thumbnail - fallback {
-    position: absolute;
-    inset: 0;
-
-    display: none;
-
-    align - items: center;
-    justify - content: center;
-
-    background - image:
-    linear - gradient(
-        rgba(0, 0, 0, 0.2),
-        rgba(0, 0, 0, 0.35)
-    ),
-        url("assets/header-background.jpg");
-
-    background - size: cover;
-    background - position: center;
-}
-
-.thumbnail - fallback img {
-    width: 28 %;
-    height: auto;
-    border - radius: 50 %;
-}
-
