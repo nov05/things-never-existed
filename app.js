@@ -131,18 +131,22 @@ function applyFilters() {
 
         /* Free-text search */
         if (query) {
-            const searchableText = Object.values(video)
-                .map(value => {
-                    if (Array.isArray(value)) {
-                        return value.join(" ");
-                    }
+            // const searchableText = Object.values(video)
+            //     .map(value => {
+            //         if (Array.isArray(value)) {
+            //             return value.join(" ");
+            //         }
 
-                    return String(value ?? "");
-                })
-                .join(" ")
-                .toLowerCase();
+            //         return String(value ?? "");
+            //     })
+            //     .join(" ")
+            //     .toLowerCase();
 
-            if (!searchableText.includes(query)) {
+            // if (!searchableText.includes(query)) {
+            //     return false;
+            // }
+            // Search only in the title for better performance
+            if (!String(video.title || "").toLowerCase().includes(query)) {
                 return false;
             }
         }
