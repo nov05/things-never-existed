@@ -1,4 +1,83 @@
-# 🟢 things-never-existed
+# 🟢 **Things Never Existed**
+
+## 👉 Features
+
+### Video Gallery
+
+* Display AI fantasy videos in a clean dark gallery.
+* Use a TikTok-style 3:4 video grid.
+* Display 7 videos per row on desktop.
+* Display 14 videos per page.
+* Automatically adapt the grid layout for mobile devices.
+* Show video titles as white text in the bottom-left corner.
+* Limit video titles to 3 lines.
+
+### YouTube Integration
+
+* Use YouTube as the video hosting platform.
+* Use YouTube thumbnails for video cards.
+* Load the YouTube player only when a video is clicked.
+* Play videos in a centered modal window.
+* Destroy the YouTube iframe when the modal is closed.
+* Support closing the player with the close button, backdrop click, or Escape key.
+
+### Search
+
+* Search videos by title.
+* Search updates the results instantly.
+* Search state is stored in the URL.
+* Example: `?search=Mushroom`
+
+### Series Filter
+
+* Automatically generate Series buttons from the video data.
+* Each video belongs to one Series.
+* Filter videos by Series.
+* The selected Series is stored in the URL.
+* Example: `?category=Food+City`
+
+### URL State
+
+* Store Search and Series filters in the URL.
+* Support Search and Series filters at the same time.
+* Example: `?search=Mushroom&category=Food+City`
+* Clear the corresponding URL parameter when a filter is removed.
+* Reloading the page restores the Search and Series state.
+
+### Pagination
+
+* Display 14 videos per page.
+* Automatically create pagination when there are more than 14 videos.
+* Provide Previous and Next buttons.
+* Provide page numbers with ellipsis for large numbers of pages.
+* Scroll to the top when changing pages.
+
+### Video Data
+
+* Load video data from `data/videos.json`.
+* Hide videos with `Status = Hidden`.
+* Generate Series automatically from the JSON data.
+* Keep additional metadata such as Tags, Description, Added Date, and Status for future use.
+
+### Google Sheet Sync
+
+* Use Google Sheets as the main content management source.
+* Automatically sync the Sheet to `videos.json`.
+* Run the synchronization through GitHub Actions.
+* Preserve the Google Sheet row order while reading data.
+* Reverse the data when generating JSON so newly added videos appear first on the website.
+* Do not overwrite the existing JSON if the Sheet data is invalid.
+
+### Thumbnail Fallback
+
+* Use the YouTube `maxresdefault` thumbnail.
+* If a thumbnail cannot be loaded, use `header-background.jpg` as the fallback image.
+
+### Navigation
+
+* Clicking the logo returns to the homepage.
+* The homepage URL is:
+  `https://nov05.github.io/things-never-existed/`
 
 
 ## 👉 Project Directory
