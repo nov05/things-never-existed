@@ -122,16 +122,19 @@ function applyFilters() {
 
     const params = new URLSearchParams();
 
-    if (query) {
-        params.set("search", searchInput.value.trim());
-    }
-
+    /* Store the selected category in the URL first. */
     if (selectedSeries !== "ALL") {
         params.set("category", selectedSeries);
     }
 
+    /* Store the search query in the URL. */
+    if (query) {
+        params.set("search", searchInput.value.trim());
+    }
+
     const queryString = params.toString();
 
+    /* Update the URL without reloading the page. */
     history.replaceState(
         null,
         "",
@@ -254,6 +257,8 @@ function createVideoCard(video) {
 
     const videoId = getYouTubeId(video);
 
+    // If a valid YouTube ID is found, set the thumbnail image source.
+    // Otherwise, display the fallback content.
     if (videoId && videoId !== "-") {
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
