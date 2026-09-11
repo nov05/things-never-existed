@@ -1,4 +1,4 @@
-name: Sync Google Sheet
+name: sync-google-sheet
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_SHEET_GID: ${{ secrets.GOOGLE_SHEET_GID }}
         run: |
-          python3 scripts/sync_sheet.py
+          python3 scripts/sync_google_sheet.py
 
       - name: Commit JSON
         run: |
