@@ -42,10 +42,8 @@ input {
         linear-gradient(rgba(0, 0, 0, 0.28),
             rgba(0, 0, 0, 0.42)),
         url("assets/header-background.jpg");
-
     background-size: cover;
     background-position: center;
-
     display: flex;
     align-items: center;
 }
@@ -53,7 +51,6 @@ input {
 .header-content {
     width: min(1400px, calc(100% - 40px));
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     gap: 14px;
@@ -61,23 +58,18 @@ input {
 
 .header-content h1 {
     margin: 0;
-
     color: #fff;
-
-    font-size: 80px;
+    font-size: 60px;
     font-weight: 800;
     line-height: 1.1;
-
     letter-spacing: -0.02em;
 }
 
 .logo {
     width: 92px;
     height: 92px;
-
     object-fit: cover;
     border-radius: 50%;
-
     flex: 0 0 auto;
 }
 
@@ -497,7 +489,7 @@ input {
     }
 
     .header-content h1 {
-        font-size: 40px;
+        font-size: 32px;
         font-weight: 800;
     }
 
