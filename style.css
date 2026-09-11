@@ -187,27 +187,21 @@ input {
     isolation: isolate;
 }
 
-.video-thumbnail {
+/*
+    YouTube thumbnail: 16:9 horizontal image
+    The actual Shorts video is centered inside it.
+    We enlarge the full image so that the central
+    9:16 area fills the card width.
+*/
+ .video-thumbnail {
     position: absolute;
-    /*
-      YouTube thumbnail:
-      16:9 horizontal image
-
-      The actual Shorts video is centered inside it.
-      We enlarge the full image so that the central
-      9:16 area fills the card width.
-    */
-    width: 237.037%;
+    width: 316.05%;
     height: 133.333%;
     max-width: none;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     display: block;
-    /*
-      The image is already 16:9,
-      so width + height above preserve that ratio.
-    */
     object-fit: fill;
     transition: transform 0.25s ease;
 }
