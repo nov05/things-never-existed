@@ -235,7 +235,7 @@ function createVideoCard(video) {
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         // Test fallback by using a non-existent image URL 
-        thumbnail.src = "https://example.com/does-not-exist.jpg";
+        // thumbnail.src = "https://example.com/does-not-exist.jpg";
 
         thumbnail.addEventListener(
             "error",
