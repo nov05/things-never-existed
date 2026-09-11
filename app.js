@@ -224,7 +224,7 @@ function createVideoCard(video) {
 
     const fallbackLogo = document.createElement("img");
 
-    fallbackLogo.src = "assets/logo.png";
+    fallbackLogo.src = "assets/logo.jpg";
     fallbackLogo.alt = "";
 
     fallback.appendChild(fallbackLogo);
