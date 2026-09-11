@@ -59,9 +59,17 @@ input {
     gap: 14px;
 }
 
+.header-content h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
 .logo {
-    width: 54px;
-    height: 54px;
+    width: 92px;
+    height: 92px;
 
     object-fit: cover;
     border-radius: 50%;
@@ -486,12 +494,12 @@ input {
     }
 
     .logo {
-        width: 46px;
-        height: 46px;
+        width: 78px;
+        height: 78px;
     }
 
     .site-header h1 {
-        font-size: 21px;
+        font-size: 40px;
     }
 
     .video-grid {
