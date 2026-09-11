@@ -309,6 +309,7 @@ footer {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
 
     overflow: hidden;
 
@@ -451,8 +452,8 @@ footer {
 
     z-index: 5;
 
-    width: 56px;
-    height: 56px;
+    width: 70px;
+    height: 70px;
 
     padding: 0;
 
@@ -464,8 +465,8 @@ footer {
 
     cursor: pointer;
 
-    font-size: 42px;
-    line-height: 56px;
+    font-size: 52px;
+    line-height: 70px;
     text-align: center;
 }
 
@@ -484,8 +485,8 @@ footer {
     top: 50%;
     transform: translateY(-50%);
 
-    width: 56px;
-    height: 56px;
+    width: 70px;
+    height: 70px;
 
     padding: 0;
 
@@ -497,19 +498,19 @@ footer {
 
     cursor: pointer;
 
-    font-size: 42px;
-    line-height: 56px;
+    font-size: 52px;
+    line-height: 70px;
     text-align: center;
 
     z-index: 5;
 }
 
 .video-nav.prev {
-    left: -76px;
+    left: -90px;
 }
 
 .video-nav.next {
-    right: -76px;
+    right: -90px;
 }
 
 
