@@ -60,11 +60,15 @@ input {
 }
 
 .header-content h1 {
-  margin: 0;
-  color: #fff;
-  font-size: 64px;
-  font-weight: 700;
-  line-height: 1.1;
+    margin: 0;
+
+    color: #fff;
+
+    font-size: 80px;
+    font-weight: 800;
+    line-height: 1.1;
+
+    letter-spacing: -0.02em;
 }
 
 .logo {
@@ -77,16 +81,6 @@ input {
     flex: 0 0 auto;
 }
 
-.site-header h1 {
-    margin: 0;
-
-    color: #fff;
-
-    font-size: clamp(22px, 3vw, 34px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-}
-
 
 /* =========================
    Main
@@ -95,6 +89,7 @@ input {
 .container {
     width: min(1400px, calc(100% - 40px));
     margin: 0 auto;
+
     padding: 28px 0 50px;
 }
 
@@ -302,6 +297,7 @@ input {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+
     overflow: hidden;
 
     text-shadow:
@@ -472,6 +468,7 @@ input {
     }
 }
 
+
 @media (max-width: 800px) {
     .video-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -488,6 +485,7 @@ input {
     }
 }
 
+
 @media (max-width: 560px) {
     .site-header {
         min-height: 130px;
@@ -498,8 +496,9 @@ input {
         height: 78px;
     }
 
-    .site-header h1 {
+    .header-content h1 {
         font-size: 40px;
+        font-weight: 800;
     }
 
     .video-grid {
