@@ -232,39 +232,27 @@ function createVideoCard(video) {
     const videoId = getYouTubeId(video);
 
     if (videoId) {
-        // thumbnail.src =
-        //     `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        thumbnail.src = "https://example.com/does-not-exist.jpg"; // Intentionally broken URL to trigger fallback
+        thumbnail.src =
+            `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        // Test fallback by using a non-existent image URL 
+        thumbnail.src = "https://example.com/does-not-exist.jpg";
 
         thumbnail.addEventListener(
             "error",
             () => {
-                /*
-                  First fallback: hqdefault
-                */
-                if (!thumbnail.dataset.hqTried) {
-                    thumbnail.dataset.hqTried = "true";
-
-                    thumbnail.src =
-                        `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-
-                    return;
-                }
-
-                /*
-                  Second fallback:
-                  header background + logo
-                */
+                // Fallback: header background + logo
                 thumbnail.style.display = "none";
                 fallback.style.display = "flex";
             },
-            { once: false }
+            { once: true }
         );
 
     } else {
+        // Fallback: header background + logo
         thumbnail.style.display = "none";
         fallback.style.display = "flex";
     }
+
 
     const title = document.createElement("h3");
 
