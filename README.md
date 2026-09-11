@@ -11,7 +11,7 @@
 ├── app.js
 │
 ├── assets/
-│   ├── logo.png
+│   ├── logo.jpg
 │   └── header-background.jpg
 │
 ├── data/
@@ -61,3 +61,7 @@ In `style.css`, display the central 9:16 area of the 16:9 YouTube thumbnail in a
     transform: translate(-50%, -50%) scale(1.025);
 }
 ```
+
+Fallback display
+
+<img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/pic001/2026-09-11%2005_23_13-Greenshot.png" width=600>  

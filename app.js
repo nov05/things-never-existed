@@ -223,10 +223,8 @@ function createVideoCard(video) {
     fallback.className = "thumbnail-fallback";
 
     // const fallbackLogo = document.createElement("img");
-
     // fallbackLogo.src = "assets/logo.jpg";
     // fallbackLogo.alt = "";
-
     // fallback.appendChild(fallbackLogo);
 
     const videoId = getYouTubeId(video);
