@@ -213,7 +213,7 @@ function createVideoCard(video) {
 
     card.className = "video-card";
 
-    // const thumbnail = document.createElement("img");
+    const thumbnail = document.createElement("img");
 
     thumbnail.className = "video-thumbnail";
     thumbnail.alt = video.title || "";
