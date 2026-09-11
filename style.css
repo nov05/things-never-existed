@@ -465,14 +465,16 @@ footer {
 
     cursor: pointer;
 
-    font-size: 64px;
-    line-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Move the character slightly 
-      upward for visual centering. */
-    padding: 0 0 13px 0;
+}
+
+.modal-close span {
+    font-size: 64px;
+    line-height: 1;
+    /* Move the character slightly upward for visual centering. */
+    transform: translateY(-12px);
 }
 
 .modal-close:hover {
@@ -485,7 +487,6 @@ footer {
 ========================= */
 
 .video-nav {
-    z-index: 5;
     position: absolute;
 
     top: 50%;
@@ -504,15 +505,18 @@ footer {
 
     cursor: pointer;
 
-    font-size: 82px !important;
-    line-height: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Move the character slightly 
-       upward for visual centering. */
-    padding: 0 0 6px 0;
+
+    z-index: 5;
+}
+
+.video-nav span {
+    font-size: 82px;
+    line-height: 1;
+    /* Move the character slightly upward for visual centering. */
+    transform: translateY(-12px);
 }
 
 .video-nav.prev {
