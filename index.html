@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Things Never Existed</title>
+    <meta name="description" content="Things Never Existed — AI fantasy short videos.">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-content">
+            <img src="assets/logo.png" alt="Things Never Existed" class="logo">
+
+            <h1>Things Never Existed</h1>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <!-- Search -->
+        <div class="search-wrapper">
+            <input type="search" id="search" placeholder="Search..." autocomplete="off">
+        </div>
+
+
+        <!-- Series -->
+        <nav id="series" class="series-nav" aria-label="Video series"></nav>
+
+
+        <!-- Current filter -->
+        <h2 id="title">All Videos</h2>
+
+
+        <!-- Video Grid -->
+        <section id="videos" class="video-grid" aria-live="polite"></section>
+
+
+        <!-- Pagination -->
+        <nav id="pagination" class="pagination" aria-label="Pagination"></nav>
+
+    </main>
+
+
+    <!-- YouTube Modal -->
+    <div id="video-modal" class="modal" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close" aria-label="Close video">
+                ×
+            </button>
+
+            <div id="player-container" class="player-container"></div>
+        </div>
+    </div>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
