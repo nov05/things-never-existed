@@ -1,16 +1,5 @@
 [
   {
-    "title": "20260904 Food City - Mushroom",
-    "youtube_id": "EcWWB-zXeAQ",
-    "series": "Food City",
-    "tags": [
-      "#FoodCity #food #city #fantasy #mushroom"
-    ],
-    "description": "",
-    "added_date": "9/4/2026",
-    "status": "Published"
-  },
-  {
     "title": "20260905 Food City - Blue Cheese",
     "youtube_id": "jzQL2wE0t_E",
     "series": "Food City",
@@ -19,6 +8,17 @@
     ],
     "description": "",
     "added_date": "9/5/2026",
+    "status": "Published"
+  },
+  {
+    "title": "20260904 Food City - Mushroom",
+    "youtube_id": "EcWWB-zXeAQ",
+    "series": "Food City",
+    "tags": [
+      "#FoodCity #food #city #fantasy #mushroom"
+    ],
+    "description": "",
+    "added_date": "9/4/2026",
     "status": "Published"
   }
 ]
