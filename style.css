@@ -465,9 +465,12 @@ footer {
 
     cursor: pointer;
 
-    font-size: 52px;
-    line-height: 70px;
-    text-align: center;
+    font-size: 64px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-close:hover {
@@ -498,9 +501,12 @@ footer {
 
     cursor: pointer;
 
-    font-size: 52px;
-    line-height: 70px;
-    text-align: center;
+    font-size: 64px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     z-index: 5;
 }
