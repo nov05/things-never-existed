@@ -430,10 +430,10 @@ document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
     }
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowUp") {
         playPreviousVideo();
     }
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowDown") {
         playNextVideo();
     }
 });
