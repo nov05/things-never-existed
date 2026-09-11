@@ -466,11 +466,12 @@ footer {
     cursor: pointer;
 
     font-size: 64px;
-    line-height: 1;
-
+    line-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    padding: 0 0 6px 0;
 }
 
 .modal-close:hover {
@@ -483,6 +484,7 @@ footer {
 ========================= */
 
 .video-nav {
+    z-index: 5;
     position: absolute;
 
     top: 50%;
@@ -501,14 +503,14 @@ footer {
 
     cursor: pointer;
 
-    font-size: 64px;
-    line-height: 1;
+    font-size: 72px;
+    line-height: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    z-index: 5;
+    padding: 0 0 6px 0;
 }
 
 .video-nav.prev {
