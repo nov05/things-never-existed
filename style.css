@@ -472,7 +472,7 @@ footer {
     justify-content: center;
     /* Move the character slightly 
       upward for visual centering. */
-    padding: 0 0 12px 0;
+    padding: 0 0 13px 0;
 }
 
 .modal-close:hover {
@@ -504,7 +504,7 @@ footer {
 
     cursor: pointer;
 
-    font-size: 82px;
+    font-size: 82px !important;
     line-height: 0;
 
     display: flex;
