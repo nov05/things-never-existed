@@ -1,4 +1,6 @@
-const PAGE_SIZE = 20;
+// Number of videos per page
+// const PAGE_SIZE = 20;
+const PAGE_SIZE = 14;
 
 let videos = [];
 let filteredVideos = [];
