@@ -474,7 +474,7 @@ footer {
     font-size: 64px;
     line-height: 1;
     /* Move the character slightly upward for visual centering. */
-    transform: translateY(0);
+    transform: translateY(12px);
 }
 
 .modal-close:hover {
@@ -517,7 +517,7 @@ footer {
     line-height: 1;
     /* Move the character slightly upward for visual centering. */
     /* Enlarge the arrow and move it slightly upward. */
-    transform: translateY(-12px) scale(1.35);
+    transform: translateY(-8px) scale(1.35);
 }
 
 .video-nav.prev {
