@@ -422,12 +422,19 @@ function closeVideo() {
 
 modalClose.addEventListener("click", closeVideo);
 
-modal.querySelector(".modal-backdrop")
-    .addEventListener("click", closeVideo);
+/* Close modal when clicking outside the player */
+// modal.querySelector(".modal-backdrop")
+//     .addEventListener("click", closeVideo);
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
+    }
+    if (event.key === "ArrowLeft") {
+        playPreviousVideo();
+    }
+    if (event.key === "ArrowRight") {
+        playNextVideo();
     }
 });
 
