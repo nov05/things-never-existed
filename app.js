@@ -229,7 +229,7 @@ function createVideoCard(video) {
 
     const videoId = getYouTubeId(video);
 
-    if (videoId) {
+    if (videoId && videoId !== "-") {
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         // Test fallback by using a non-existent image URL 
