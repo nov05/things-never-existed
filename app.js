@@ -213,7 +213,7 @@ function createVideoCard(video) {
 
     card.className = "video-card";
 
-    const thumbnail = document.createElement("img");
+    // const thumbnail = document.createElement("img");
 
     thumbnail.className = "video-thumbnail";
     thumbnail.alt = video.title || "";
@@ -222,12 +222,12 @@ function createVideoCard(video) {
 
     fallback.className = "thumbnail-fallback";
 
-    const fallbackLogo = document.createElement("img");
+    // const fallbackLogo = document.createElement("img");
 
-    fallbackLogo.src = "assets/logo.jpg";
-    fallbackLogo.alt = "";
+    // fallbackLogo.src = "assets/logo.jpg";
+    // fallbackLogo.alt = "";
 
-    fallback.appendChild(fallbackLogo);
+    // fallback.appendChild(fallbackLogo);
 
     const videoId = getYouTubeId(video);
 
