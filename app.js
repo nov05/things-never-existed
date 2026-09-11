@@ -359,9 +359,10 @@ function openVideo(video) {
 
     const iframe = document.createElement("iframe");
 
+    /* Enable autoplay and continuous looping. */
     iframe.src =
         `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` +
-        `?autoplay=1&rel=0`;
+        `?autoplay=1&rel=0&loop=1&playlist=${encodeURIComponent(videoId)}`;
 
     iframe.title = video.title || "YouTube video";
 
