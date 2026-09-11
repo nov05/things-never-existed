@@ -470,7 +470,8 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    /* Move the character slightly 
+      upward for visual centering. */
     padding: 0 0 12px 0;
 }
 
@@ -509,7 +510,8 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    /* Move the character slightly 
+       upward for visual centering. */
     padding: 0 0 6px 0;
 }
 
