@@ -14,7 +14,7 @@
     },
     {
         "title": "A City That Never Existed",
-        "youtube_id": "YOUR_YOUTUBE_ID_2",
+        "youtube_id": "ophsFyVPkhc",
         "series": "MEMORY",
         "tags": [
             "city",
@@ -27,7 +27,33 @@
     },
     {
         "title": "The Last Drop of an Impossible Ocean",
-        "youtube_id": "YOUR_YOUTUBE_ID_3",
+        "youtube_id": "ophsFyVPkhc",
+        "series": "WATER",
+        "tags": [
+            "water",
+            "ocean",
+            "surreal"
+        ],
+        "description": "Something impossible waits beneath the surface.",
+        "added_date": "2026-09-08",
+        "status": "Published"
+    }
+    {
+        "title": "The Last Drop of an Impossible Ocean",
+        "youtube_id": "ophsFyVPkhc",
+        "series": "WATER",
+        "tags": [
+            "water",
+            "ocean",
+            "surreal"
+        ],
+        "description": "Something impossible waits beneath the surface.",
+        "added_date": "2026-09-08",
+        "status": "Published"
+    }
+    {
+        "title": "The Last Drop of an Impossible Ocean",
+        "youtube_id": "ophsFyVPkhc",
         "series": "WATER",
         "tags": [
             "water",
