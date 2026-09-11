@@ -176,7 +176,7 @@ def main():
             delete=False
         ) as temp:
             json.dump(
-                output,
+                output[::-1],  # Reverse order for newest first
                 temp,
                 ensure_ascii=False,
                 indent=2
