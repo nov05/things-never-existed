@@ -232,8 +232,9 @@ function createVideoCard(video) {
     const videoId = getYouTubeId(video);
 
     if (videoId) {
-        thumbnail.src =
-            `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        // thumbnail.src =
+        //     `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        thumbnail.src = "https://example.com/does-not-exist.jpg"; // Intentionally broken URL to trigger fallback
 
         thumbnail.addEventListener(
             "error",

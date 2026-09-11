@@ -34,3 +34,30 @@
 ## 👉 YouTube Shorts Thumbnail
 
 <img src="https://img.youtube.com/vi/ophsFyVPkhc/maxresdefault.jpg" width=400>
+
+In `style.css`, display the central 9:16 area of the 16:9 YouTube thumbnail in a 3:4 TikTok-style card.  
+
+```text
+/*
+    YouTube thumbnail is a 16:9 horizontal image.
+    The actual Shorts video is centered inside it.
+    We enlarge the full image so that the central
+    9:16 area fills the card width.
+*/
+ .video-thumbnail {
+    position: absolute;
+    width: 316.05%;
+    height: 133.333%;
+    max-width: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    object-fit: fill;
+    transition: transform 0.25s ease;
+}
+
+.video-card:hover .video-thumbnail {
+    transform: translate(-50%, -50%) scale(1.025);
+}
+```

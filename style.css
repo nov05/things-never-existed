@@ -188,7 +188,10 @@ input {
 }
 
 /*
-    YouTube thumbnail: 16:9 horizontal image
+    Display the central 9:16 area of the 16:9 YouTube 
+    thumbnail in a 3:4 TikTok-style card.
+
+    YouTube thumbnail is a 16:9 horizontal image.
     The actual Shorts video is centered inside it.
     We enlarge the full image so that the central
     9:16 area fills the card width.
