@@ -474,13 +474,6 @@ footer {
    Video Navigation
 ========================= */
 
-.player-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .video-nav {
     position: absolute;
     top: 50%;
