@@ -1,67 +1,13 @@
 [
   {
-    "title": "The House That Dreams",
-    "youtube_id": "ophsFyVPkhc",
-    "series": "DREAM",
+    "title": "20260904 Food City - Mushroom",
+    "youtube_id": "EcWWB-zXeAQ",
+    "series": "Food City",
     "tags": [
-      "dream",
-      "house",
-      "surreal"
+      "#FoodCity #food #city #mushroom #fantasy"
     ],
-    "description": "A house appears only when someone falls asleep.",
-    "added_date": "2026-09-11",
-    "status": "Published"
-  },
-  {
-    "title": "The Ocean Inside the Room",
-    "youtube_id": "ophsFyVPkhc",
-    "series": "WATER",
-    "tags": [
-      "ocean",
-      "room",
-      "water"
-    ],
-    "description": "An impossible ocean quietly fills an ordinary room.",
-    "added_date": "2026-09-10",
-    "status": "Published"
-  },
-  {
-    "title": "A Memory With No Owner",
-    "youtube_id": "ophsFyVPkhc",
-    "series": "MEMORY",
-    "tags": [
-      "memory",
-      "forgotten",
-      "surreal"
-    ],
-    "description": "A memory remains after everyone who remembers it is gone.",
-    "added_date": "2026-09-09",
-    "status": "Published"
-  },
-  {
-    "title": "The Door Between Two Worlds",
-    "youtube_id": "ophsFyVPkhc",
-    "series": "TIME",
-    "tags": [
-      "door",
-      "time",
-      "fantasy"
-    ],
-    "description": "A mysterious door connects two moments that should never meet.",
-    "added_date": "2026-09-08",
-    "status": "Published"
-  },
-  {
-    "title": "The Forest That Was Never There",
-    "youtube_id": "fake",
-    "series": "NATURE",
-    "tags": [
-      "forest",
-      "impossible",
-      "fantasy"
-    ],
-    "description": "A strange forest appears in a place where no forest has ever existed.",
-    "added_date": "2026-09-07",
+    "description": "",
+    "added_date": "9/4/2026",
     "status": "Published"
   }
 ]
