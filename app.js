@@ -50,6 +50,7 @@ async function loadVideos() {
         });
 
         renderSeries();
+        loadUrlState();
         applyFilters();
 
     } catch (error) {
@@ -118,6 +119,22 @@ function applyFilters() {
     const query = searchInput.value
         .trim()
         .toLowerCase();
+
+    const url = new URL(window.location);
+
+    if (query) {
+        url.searchParams.set("search", searchInput.value.trim());
+    } else {
+        url.searchParams.delete("search");
+    }
+
+    if (selectedSeries !== "ALL") {
+        url.searchParams.set("category", selectedSeries);
+    } else {
+        url.searchParams.delete("category");
+    }
+
+    history.replaceState(null, "", url);
 
     filteredVideos = videos.filter(video => {
 
@@ -514,3 +531,23 @@ function getVisiblePages(totalPages, current) {
 ========================= */
 
 loadVideos();
+
+
+/* =========================
+   URL State
+========================= */
+
+function loadUrlState() {
+    const params = new URLSearchParams(window.location.search);
+
+    const category = params.get("category");
+    const search = params.get("search");
+
+    if (category) {
+        selectedSeries = category;
+    }
+
+    if (search) {
+        searchInput.value = search;
+    }
+}
