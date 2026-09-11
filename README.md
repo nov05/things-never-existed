@@ -25,11 +25,30 @@
         └── sync.yml
 ```
 
-## 👉 Google Sheet 
+## 👉 Google Sheet (as Database)
 
 | Title                                | YouTube ID                                                | Series                                   | Tags                                      | Description                                                          | Added Date                                    | Status                                                 |
 | ------------------------------------ | --------------------------------------------------------- | ---------------------------------------- | ----------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ |
 | Video title. Maximum 100 characters. | YouTube video ID only. Do not enter the full YouTube URL. | The single Series this video belongs to. | Searchable keywords, separated by commas. | Short description of the video. Used for search and future metadata. | Date the video was added. Format: YYYY-MM-DD. | `Published` to show the video, or `Hidden` to hide it. |
+
+## 👉 URL State Rules
+
+* `category` — selected category
+* `search` — search query
+
+Examples:  
+`/?category=Food%20City`  
+`/?search=Mushroom`  
+`/?category=Food%20City&search=Mushroom`  
+
+Rules:
+
+* `ALL` removes `category`
+* Clearing search removes `search`
+* Pagination is not stored in the URL
+* URL changes do not reload the page
+* Reloading the page restores the search and category state
+
 
 ## 👉 YouTube Shorts Thumbnail
 

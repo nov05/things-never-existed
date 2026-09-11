@@ -120,21 +120,23 @@ function applyFilters() {
         .trim()
         .toLowerCase();
 
-    const url = new URL(window.location);
+    const params = new URLSearchParams();
 
     if (query) {
-        url.searchParams.set("search", searchInput.value.trim());
-    } else {
-        url.searchParams.delete("search");
+        params.set("search", searchInput.value.trim());
     }
 
     if (selectedSeries !== "ALL") {
-        url.searchParams.set("category", selectedSeries);
-    } else {
-        url.searchParams.delete("category");
+        params.set("category", selectedSeries);
     }
 
-    history.replaceState(null, "", url);
+    const queryString = params.toString();
+
+    history.replaceState(
+        null,
+        "",
+        queryString ? `?${queryString}` : window.location.pathname
+    );
 
     filteredVideos = videos.filter(video => {
 
@@ -386,6 +388,26 @@ document.addEventListener("keydown", event => {
 
 
 /* =========================
+   URL State
+========================= */
+
+function loadUrlState() {
+    const params = new URLSearchParams(window.location.search);
+
+    const category = params.get("category");
+    const search = params.get("search");
+
+    if (category) {
+        selectedSeries = category;
+    }
+
+    if (search) {
+        searchInput.value = search;
+    }
+}
+
+
+/* =========================
    Search
 ========================= */
 
@@ -531,23 +553,3 @@ function getVisiblePages(totalPages, current) {
 ========================= */
 
 loadVideos();
-
-
-/* =========================
-   URL State
-========================= */
-
-function loadUrlState() {
-    const params = new URLSearchParams(window.location.search);
-
-    const category = params.get("category");
-    const search = params.get("search");
-
-    if (category) {
-        selectedSeries = category;
-    }
-
-    if (search) {
-        searchInput.value = search;
-    }
-}
