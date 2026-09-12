@@ -33,6 +33,7 @@ window.onYouTubeIframeAPIReady = function () {
     }
 };
 
+
 function createYouTubePlayer(video) {
     const videoId = getYouTubeId(video);
 
@@ -83,7 +84,7 @@ function createYouTubePlayer(video) {
             onReady: event => {
                 /*
                   Load the filtered playlist and start
-                  from the video that was clicked.
+                  from the clicked video.
                 */
                 event.target.loadPlaylist(
                     playlist,
@@ -91,6 +92,13 @@ function createYouTubePlayer(video) {
                 );
 
                 event.target.setLoop(false);
+
+                /*
+                  Give the YouTube iframe keyboard focus immediately.
+                */
+                setTimeout(() => {
+                    event.target.getIframe().focus();
+                }, 100);
             },
 
             onStateChange: event => {
@@ -471,17 +479,17 @@ function closeVideo() {
 modal.querySelector(".modal-backdrop")
     .addEventListener("click", closeVideo);
 
-    
+
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
     }
-    // if (event.key === "ArrowUp") {
-    //     playPreviousVideo();
-    // }
-    // if (event.key === "ArrowDown") {
-    //     playNextVideo();
-    // }
+    if (event.key === "ArrowUp") {
+        playPreviousVideo();
+    }
+    if (event.key === "ArrowDown") {
+        playNextVideo();
+    }
 });
 
 
