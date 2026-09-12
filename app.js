@@ -168,14 +168,12 @@ function applyFilters() {
     const query = searchInput.value
         .trim()
         .toLowerCase();
-
     const params = new URLSearchParams();
 
     /* Store the selected category in the URL first. */
     if (selectedSeries !== "ALL") {
         params.set("category", selectedSeries);
     }
-
     /* Store the search query in the URL. */
     if (query) {
         params.set("search", searchInput.value.trim());
@@ -191,9 +189,7 @@ function applyFilters() {
             ? `?${queryString}`
             : window.location.pathname
     );
-
     filteredVideos = videos.filter(video => {
-
         /* Series filter */
         if (
             selectedSeries !== "ALL" &&
@@ -201,7 +197,6 @@ function applyFilters() {
         ) {
             return false;
         }
-
         /* Free-text search */
         if (query) {
             /* Search only in the title for better performance */
@@ -213,10 +208,8 @@ function applyFilters() {
                 return false;
             }
         }
-
         return true;
     });
-
     updateSectionTitle();
     renderVideos();
     renderPagination();
@@ -242,19 +235,15 @@ function updateSectionTitle() {
 
 function renderVideos() {
     videosContainer.innerHTML = "";
-
     const totalPages = Math.max(
         1,
         Math.ceil(filteredVideos.length / PAGE_SIZE)
     );
-
     if (currentPage > totalPages) {
         currentPage = totalPages;
     }
-
     const start = (currentPage - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE;
-
     const pageVideos = filteredVideos.slice(start, end);
 
     if (pageVideos.length === 0) {
@@ -263,10 +252,8 @@ function renderVideos() {
         No videos found.
       </div>
     `;
-
         return;
     }
-
     pageVideos.forEach(video => {
         videosContainer.appendChild(
             createVideoCard(video)
@@ -282,16 +269,12 @@ function renderVideos() {
 function createVideoCard(video) {
     const card = document.createElement("article");
     card.className = "video-card";
-
     const thumbnail = document.createElement("img");
     thumbnail.className = "video-thumbnail";
     thumbnail.alt = video.title || "";
-
     const fallback = document.createElement("div");
     fallback.className = "thumbnail-fallback";
-
     const videoId = getYouTubeId(video);
-
     /*
       If a valid YouTube ID is found,
       set the thumbnail image source.
@@ -319,7 +302,6 @@ function createVideoCard(video) {
         thumbnail.style.display = "none";
         fallback.style.display = "flex";
     }
-
     const title = document.createElement("h3");
     title.className = "video-title";
     title.textContent = video.title || "";
@@ -329,7 +311,6 @@ function createVideoCard(video) {
     card.addEventListener("click", () => {
         openVideo(video);
     });
-
     return card;
 }
 
@@ -359,53 +340,6 @@ function getYouTubeId(video) {
    YouTube Player
 ========================= */
 
-// function createYouTubePlayer(video) {
-//     const videoId = getYouTubeId(video);
-
-//     if (!videoId) return;
-
-//     const playlist = filteredVideos
-//         .map(item => getYouTubeId(item))
-//         .filter(Boolean);
-//     const currentIndex = playlist.indexOf(videoId);
-
-//     if (currentIndex === -1) return;
-
-//     if (youtubePlayer) {
-//         youtubePlayer.destroy();
-//         youtubePlayer = null;
-//     }
-
-//     playerContainer.innerHTML = "";
-
-//     youtubePlayer = new YT.Player(
-//         "player-container",
-//         {
-//             width: "100%",
-//             height: "100%",
-//             videoId: videoId,
-//             playerVars: {
-//                 autoplay: 1,
-//                 rel: 0,
-//                 playsinline: 1,
-//                 loop: 1
-//             },
-//             events: {
-//                 onReady: event => {
-//                     event.target.loadPlaylist(
-//                         playlist,
-//                         currentIndex
-//                     );
-//                     event.target.setLoop(false);
-//                 }
-//             }
-//         }
-//     );
-//     modal.classList.add("open");
-//     modal.setAttribute("aria-hidden", "false");
-//     document.body.style.overflow = "hidden";
-// }
-
 function createYouTubePlayer(video) {
     const videoId = getYouTubeId(video);
     if (!videoId) return;
@@ -431,10 +365,11 @@ function createYouTubePlayer(video) {
             height: "100%",
             videoId: videoId,
             playerVars: {
-                autoplay: 0,
-                rel: 0,
                 playsinline: 1,
-                loop: 1
+                autoplay: 1,
+                loop: 0,
+                controls: 1,
+                rel: 0,
             },
             events: {
                 onReady: event => {
