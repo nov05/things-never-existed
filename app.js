@@ -16,7 +16,7 @@ let currentPage = 1;
 const keyboardHint = document.getElementById("keyboard-hint");
 
 function hideKeyboardHint() {
-    keyboardHint.style.display = "none";
+    keyboardHint.classList.add("hide");
 }
 
 ["mousemove", "mousedown", "wheel", "touchstart", "keydown"].forEach(event => {
@@ -24,6 +24,7 @@ function hideKeyboardHint() {
         once: true
     });
 });
+
 
 /* =========================
    YouTube Player API
