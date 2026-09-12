@@ -10,6 +10,108 @@ let currentPage = 1;
 
 
 /* =========================
+   YouTube Player API
+========================= */
+
+// YouTube Player API variables
+let youtubePlayer = null;
+let youtubeApiReady = false;
+let pendingVideo = null;
+
+/* Load the YouTube IFrame Player API. */
+const youtubeScript = document.createElement("script");
+youtubeScript.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(youtubeScript);
+
+/* Called by the YouTube API when it is ready. */
+window.onYouTubeIframeAPIReady = function () {
+    youtubeApiReady = true;
+
+    if (pendingVideo) {
+        createYouTubePlayer(pendingVideo);
+        pendingVideo = null;
+    }
+};
+
+function createYouTubePlayer(video) {
+    const videoId = getYouTubeId(video);
+
+    if (!videoId) {
+        return;
+    }
+
+    /*
+      Build the playlist from the current filtered videos.
+    */
+    const playlist = filteredVideos
+        .map(item => getYouTubeId(item))
+        .filter(Boolean);
+
+    /*
+      Find the clicked video inside the filtered playlist.
+    */
+    const currentIndex = playlist.indexOf(videoId);
+
+    if (currentIndex === -1) {
+        return;
+    }
+
+    /*
+      Destroy the previous player before creating a new one.
+    */
+    if (youtubePlayer) {
+        youtubePlayer.destroy();
+        youtubePlayer = null;
+    }
+
+    playerContainer.innerHTML = "";
+
+    /*
+      Create the YouTube player.
+    */
+    youtubePlayer = new YT.Player("player-container", {
+        width: "100%",
+        height: "100%",
+
+        playerVars: {
+            autoplay: 1,
+            rel: 0,
+            playsinline: 1
+        },
+
+        events: {
+            onReady: event => {
+                /*
+                  Load the filtered playlist and start
+                  from the video that was clicked.
+                */
+                event.target.loadPlaylist(
+                    playlist,
+                    currentIndex
+                );
+
+                event.target.setLoop(false);
+            },
+
+            onStateChange: event => {
+                /*
+                  Restart the current video when it ends.
+                */
+                if (event.data === YT.PlayerState.ENDED) {
+                    event.target.playVideo();
+                }
+            }
+        }
+    });
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+
+    document.body.style.overflow = "hidden";
+}
+
+
+/* =========================
    Elements
 ========================= */
 
@@ -330,39 +432,17 @@ function openVideo(video) {
     if (!videoId) {
         return;
     }
-
     /*
-      iframe is created ONLY after clicking.
+      Wait for the YouTube API if it has not loaded yet.
     */
+    if (!youtubeApiReady) {
+        pendingVideo = video;
+        return;
+    }
 
-    playerContainer.innerHTML = "";
-
-    const iframe = document.createElement("iframe");
-
-    /* Enable autoplay and play the current filtered video list. */
-    const playlist = filteredVideos
-        .map(item => getYouTubeId(item))
-        .filter(Boolean)
-        .join(",");
-
-    iframe.src =
-        `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` +
-        `?autoplay=1&rel=0&loop=1&playlist=${encodeURIComponent(playlist)}`;
-
-    iframe.title = video.title || "YouTube video";
-
-    iframe.allow =
-        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-
-    iframe.allowFullscreen = true;
-
-    playerContainer.appendChild(iframe);
-
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-
-    document.body.style.overflow = "hidden";
+    createYouTubePlayer(video);
 }
+
 
 
 /* =========================
@@ -374,17 +454,24 @@ function closeVideo() {
     modal.setAttribute("aria-hidden", "true");
 
     /*
-      Destroy iframe when closing.
+      Destroy the YouTube player when closing.
     */
+    if (youtubePlayer) {
+        youtubePlayer.destroy();
+        youtubePlayer = null;
+    }
+
     playerContainer.innerHTML = "";
 
     document.body.style.overflow = "";
 }
 
+
 /* Close modal when clicking outside the player */
 modal.querySelector(".modal-backdrop")
     .addEventListener("click", closeVideo);
 
+    
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
