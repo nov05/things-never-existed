@@ -509,26 +509,26 @@ footer {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 33.333vw;
-    height: 11.111vh;
+    width: 60vw;
+    height: 22vh;
     z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.65);
     color: #fff;
     font-size: clamp(24px, 3vw, 48px);
     font-weight: 500;
     letter-spacing: 0.02em;
-    border-radius: 16px;
+    border-radius: 20px;
     pointer-events: none;
     box-sizing: border-box;
+    text-align: center;
     opacity: 1;
     transition: opacity 2s ease;
 }
-
 #keyboard-hint.hide {
-    opacity: 0;
+    opacity: 0.15;
 }
 
 @keyframes keyboardHint {
