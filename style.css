@@ -525,7 +525,7 @@ footer {
     box-sizing: border-box;
     text-align: center;
     opacity: 1;
-    transition: opacity 2s ease;
+    transition: opacity 5s ease;
 }
 #keyboard-hint.hide {
     opacity: 0;
