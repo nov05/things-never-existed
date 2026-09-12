@@ -20,9 +20,7 @@ function hideKeyboardHint() {
 }
 
 ["mousemove", "mousedown", "wheel", "touchstart", "keydown"].forEach(event => {
-    document.addEventListener(event, hideKeyboardHint, {
-        once: true
-    });
+    document.addEventListener(event, hideKeyboardHint);
 });
 
 

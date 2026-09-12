@@ -528,7 +528,7 @@ footer {
     transition: opacity 2s ease;
 }
 #keyboard-hint.hide {
-    opacity: 0.15;
+    opacity: 0;
 }
 
 @keyframes keyboardHint {
