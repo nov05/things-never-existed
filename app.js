@@ -106,7 +106,10 @@ function getSeriesList() {
         .map(video => String(video.series || "").trim())
         .filter(Boolean);
 
-    return [...new Set(series)];
+    // return [...new Set(series)];
+    return [...new Set(series)].sort((a, b) =>
+        a.localeCompare(b)
+    );
 }
 
 
