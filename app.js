@@ -18,12 +18,20 @@ let youtubePlayer = null;
 let youtubeApiReady = false;
 let pendingVideo = null;
 
-/* Load the YouTube IFrame Player API. */
+
+/*
+  Load the YouTube IFrame Player API.
+*/
 const youtubeScript = document.createElement("script");
+
 youtubeScript.src = "https://www.youtube.com/iframe_api";
+
 document.head.appendChild(youtubeScript);
 
-/* Called by the YouTube API when it is ready. */
+
+/*
+  Called by the YouTube API when it is ready.
+*/
 window.onYouTubeIframeAPIReady = function () {
     youtubeApiReady = true;
 
@@ -32,91 +40,6 @@ window.onYouTubeIframeAPIReady = function () {
         pendingVideo = null;
     }
 };
-
-
-function createYouTubePlayer(video) {
-    const videoId = getYouTubeId(video);
-
-    if (!videoId) {
-        return;
-    }
-
-    /*
-      Build the playlist from the current filtered videos.
-    */
-    const playlist = filteredVideos
-        .map(item => getYouTubeId(item))
-        .filter(Boolean);
-
-    /*
-      Find the clicked video inside the filtered playlist.
-    */
-    const currentIndex = playlist.indexOf(videoId);
-
-    if (currentIndex === -1) {
-        return;
-    }
-
-    /*
-      Destroy the previous player before creating a new one.
-    */
-    if (youtubePlayer) {
-        youtubePlayer.destroy();
-        youtubePlayer = null;
-    }
-
-    playerContainer.innerHTML = "";
-
-    /*
-      Create the YouTube player.
-    */
-    youtubePlayer = new YT.Player("player-container", {
-        width: "100%",
-        height: "100%",
-
-        playerVars: {
-            autoplay: 1,
-            rel: 0,
-            playsinline: 1
-        },
-
-        events: {
-            onReady: event => {
-                /*
-                  Load the filtered playlist and start
-                  from the clicked video.
-                */
-                event.target.loadPlaylist(
-                    playlist,
-                    currentIndex
-                );
-
-                event.target.setLoop(false);
-
-                /*
-                  Give the YouTube iframe keyboard focus immediately.
-                */
-                setTimeout(() => {
-                    event.target.getIframe().focus();
-                }, 100);
-            },
-
-            onStateChange: event => {
-                /*
-                  Restart the current video when it ends.
-                */
-                if (event.data === YT.PlayerState.ENDED) {
-                    event.target.playVideo();
-                }
-            }
-        }
-    });
-
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-
-    document.body.style.overflow = "hidden";
-}
 
 
 /* =========================
@@ -131,7 +54,6 @@ const paginationContainer = document.getElementById("pagination");
 
 const modal = document.getElementById("video-modal");
 const playerContainer = document.getElementById("player-container");
-
 
 
 /* =========================
@@ -248,7 +170,9 @@ function applyFilters() {
     history.replaceState(
         null,
         "",
-        queryString ? `?${queryString}` : window.location.pathname
+        queryString
+            ? `?${queryString}`
+            : window.location.pathname
     );
 
     filteredVideos = videos.filter(video => {
@@ -263,23 +187,12 @@ function applyFilters() {
 
         /* Free-text search */
         if (query) {
-            // const searchableText = Object.values(video)
-            //     .map(value => {
-            //         if (Array.isArray(value)) {
-            //             return value.join(" ");
-            //         }
-
-            //         return String(value ?? "");
-            //     })
-            //     .join(" ")
-            //     .toLowerCase();
-
-            // if (!searchableText.includes(query)) {
-            //     return false;
-            // }
-
             /* Search only in the title for better performance */
-            if (!String(video.title || "").toLowerCase().includes(query)) {
+            if (
+                !String(video.title || "")
+                    .toLowerCase()
+                    .includes(query)
+            ) {
                 return false;
             }
         }
@@ -338,7 +251,9 @@ function renderVideos() {
     }
 
     pageVideos.forEach(video => {
-        videosContainer.appendChild(createVideoCard(video));
+        videosContainer.appendChild(
+            createVideoCard(video)
+        );
     });
 }
 
@@ -363,26 +278,38 @@ function createVideoCard(video) {
 
     const videoId = getYouTubeId(video);
 
-    /* If a valid YouTube ID is found, set the thumbnail image source.
-       Otherwise, display the fallback content. */
+    /*
+      If a valid YouTube ID is found,
+      set the thumbnail image source.
+      Otherwise, display the fallback content.
+    */
     if (videoId && videoId !== "-") {
+
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        // Test fallback by using a non-existent image URL 
-        // thumbnail.src = "https://example.com/does-not-exist.jpg";
+
+        /*
+          Test fallback by using a non-existent image URL.
+
+          thumbnail.src =
+              "https://example.com/does-not-exist.jpg";
+        */
 
         thumbnail.addEventListener(
             "error",
             () => {
-                // Fallback: header background + logo
+
+                /* Fallback: header background */
                 thumbnail.style.display = "none";
                 fallback.style.display = "flex";
+
             },
             { once: true }
         );
 
     } else {
-        // Fallback: header background + logo
+
+        /* Fallback: header background */
         thumbnail.style.display = "none";
         fallback.style.display = "flex";
     }
@@ -410,11 +337,13 @@ function createVideoCard(video) {
 ========================= */
 
 function getYouTubeId(video) {
+
     if (video.youtube_id) {
         return String(video.youtube_id).trim();
     }
 
     if (video.youtube) {
+
         const value = String(video.youtube).trim();
 
         const match = value.match(
@@ -431,26 +360,127 @@ function getYouTubeId(video) {
 
 
 /* =========================
-   Open Video
+   YouTube Player
 ========================= */
 
-function openVideo(video) {
+function createYouTubePlayer(video) {
+
     const videoId = getYouTubeId(video);
 
     if (!videoId) {
         return;
     }
+
+
     /*
-      Wait for the YouTube API if it has not loaded yet.
+      Use the already filtered videos
+      as the YouTube playlist.
     */
-    if (!youtubeApiReady) {
-        pendingVideo = video;
+    const playlist = filteredVideos
+        .map(item => getYouTubeId(item))
+        .filter(Boolean);
+
+
+    /*
+      Find the clicked video inside
+      the filtered playlist.
+    */
+    const currentIndex = playlist.indexOf(videoId);
+
+    if (currentIndex === -1) {
         return;
     }
 
-    createYouTubePlayer(video);
+
+    /*
+      Destroy the previous player.
+    */
+    if (youtubePlayer) {
+        youtubePlayer.destroy();
+        youtubePlayer = null;
+    }
+
+    playerContainer.innerHTML = "";
+
+
+    /*
+      Create the YouTube player.
+    */
+    youtubePlayer = new YT.Player(
+        "player-container",
+        {
+            width: "100%",
+            height: "100%",
+
+            videoId: videoId,
+
+            playerVars: {
+                autoplay: 1,
+                rel: 0,
+                playsinline: 1
+            },
+
+            events: {
+
+                /*
+                  Load the filtered playlist after
+                  the player is ready.
+                */
+                onReady: event => {
+
+                    event.target.loadPlaylist(
+                        playlist,
+                        currentIndex
+                    );
+
+                }
+
+            }
+        }
+    );
+
+
+    /*
+      Open the modal.
+    */
+    modal.classList.add("open");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow = "hidden";
 }
 
+
+/* =========================
+   Open Video
+========================= */
+
+function openVideo(video) {
+
+    const videoId = getYouTubeId(video);
+
+    if (!videoId) {
+        return;
+    }
+
+
+    /*
+      Wait for the YouTube API if it
+      has not loaded yet.
+    */
+    if (!youtubeApiReady) {
+
+        pendingVideo = video;
+
+        return;
+    }
+
+
+    createYouTubePlayer(video);
+}
 
 
 /* =========================
@@ -458,14 +488,22 @@ function openVideo(video) {
 ========================= */
 
 function closeVideo() {
+
     modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
 
     /*
-      Destroy the YouTube player when closing.
+      Destroy the YouTube player.
     */
     if (youtubePlayer) {
+
         youtubePlayer.destroy();
+
         youtubePlayer = null;
     }
 
@@ -475,22 +513,29 @@ function closeVideo() {
 }
 
 
-/* Close modal when clicking outside the player */
+/*
+  Close modal when clicking outside the player.
+*/
 modal.querySelector(".modal-backdrop")
-    .addEventListener("click", closeVideo);
+    .addEventListener(
+        "click",
+        closeVideo
+    );
 
 
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        closeVideo();
+/*
+  Close modal with Escape.
+*/
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Escape") {
+            closeVideo();
+        }
+
     }
-    if (event.key === "ArrowUp") {
-        playPreviousVideo();
-    }
-    if (event.key === "ArrowDown") {
-        playNextVideo();
-    }
-});
+);
 
 
 /* =========================
@@ -498,7 +543,11 @@ document.addEventListener("keydown", event => {
 ========================= */
 
 function loadUrlState() {
-    const params = new URLSearchParams(window.location.search);
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
     const category = params.get("category");
     const search = params.get("search");
@@ -517,10 +566,16 @@ function loadUrlState() {
    Search
 ========================= */
 
-searchInput.addEventListener("input", () => {
-    currentPage = 1;
-    applyFilters();
-});
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        currentPage = 1;
+
+        applyFilters();
+
+    }
+);
 
 
 /* =========================
@@ -528,6 +583,7 @@ searchInput.addEventListener("input", () => {
 ========================= */
 
 function renderPagination() {
+
     paginationContainer.innerHTML = "";
 
     const totalPages = Math.ceil(
@@ -538,6 +594,7 @@ function renderPagination() {
         return;
     }
 
+
     /* Previous */
     const previous = createPageButton(
         "‹",
@@ -545,29 +602,39 @@ function renderPagination() {
         currentPage === 1
     );
 
-    paginationContainer.appendChild(previous);
+    paginationContainer.appendChild(
+        previous
+    );
 
 
     /*
       Show page numbers.
-  
+
       For a small number of pages:
       1 2 3 4 5
-  
+
       For many pages:
       1 ... 4 5 6 ... 20
     */
-    const pages = getVisiblePages(totalPages, currentPage);
+    const pages = getVisiblePages(
+        totalPages,
+        currentPage
+    );
 
     pages.forEach(page => {
+
         if (page === "...") {
-            const dots = document.createElement("span");
+
+            const dots =
+                document.createElement("span");
 
             dots.textContent = "…";
             dots.style.color = "#666";
             dots.style.padding = "0 4px";
 
-            paginationContainer.appendChild(dots);
+            paginationContainer.appendChild(
+                dots
+            );
 
             return;
         }
@@ -582,7 +649,10 @@ function renderPagination() {
             button.classList.add("current");
         }
 
-        paginationContainer.appendChild(button);
+        paginationContainer.appendChild(
+            button
+        );
+
     });
 
 
@@ -593,40 +663,59 @@ function renderPagination() {
         currentPage === totalPages
     );
 
-    paginationContainer.appendChild(next);
+    paginationContainer.appendChild(
+        next
+    );
 }
 
 
-function createPageButton(label, page, disabled) {
-    const button = document.createElement("button");
+function createPageButton(
+    label,
+    page,
+    disabled
+) {
+
+    const button =
+        document.createElement("button");
 
     button.type = "button";
     button.className = "page-button";
     button.textContent = label;
     button.disabled = disabled;
 
-    button.addEventListener("click", () => {
-        currentPage = page;
+    button.addEventListener(
+        "click",
+        () => {
 
-        renderVideos();
-        renderPagination();
+            currentPage = page;
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    });
+            renderVideos();
+            renderPagination();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+    );
 
     return button;
 }
 
 
-function getVisiblePages(totalPages, current) {
+function getVisiblePages(
+    totalPages,
+    current
+) {
+
     if (totalPages <= 7) {
+
         return Array.from(
             { length: totalPages },
             (_, index) => index + 1
         );
+
     }
 
     const pages = [];
@@ -637,15 +726,35 @@ function getVisiblePages(totalPages, current) {
         pages.push("...");
     }
 
-    const start = Math.max(2, current - 1);
-    const end = Math.min(totalPages - 1, current + 1);
+    const start =
+        Math.max(
+            2,
+            current - 1
+        );
 
-    for (let page = start; page <= end; page++) {
+    const end =
+        Math.min(
+            totalPages - 1,
+            current + 1
+        );
+
+    for (
+        let page = start;
+        page <= end;
+        page++
+    ) {
+
         pages.push(page);
+
     }
 
-    if (current < totalPages - 3) {
+    if (
+        current <
+        totalPages - 3
+    ) {
+
         pages.push("...");
+
     }
 
     pages.push(totalPages);
