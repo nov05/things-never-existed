@@ -765,6 +765,26 @@ function getVisiblePages(
     return pages;
 }
 
+// Use left and right arrows to navigate between pages.
+document.getElementById("page-prev").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderVideos();
+        renderPagination();
+    }
+});
+document.getElementById("page-next").addEventListener("click", () => {
+    const totalPages = Math.ceil(
+        filteredVideos.length / PAGE_SIZE
+    );
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderVideos();
+        renderPagination();
+    }
+});
+
 
 /* =========================
    Start
