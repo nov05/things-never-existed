@@ -339,7 +339,12 @@ function openVideo(video) {
 
     const iframe = document.createElement("iframe");
 
-    /* Enable autoplay and continuous looping. */
+    /* Enable autoplay and play the current filtered video list. */
+    const playlist = filteredVideos
+        .map(item => getYouTubeId(item))
+        .filter(Boolean)
+        .join(",");
+
     iframe.src =
         `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` +
         `?autoplay=1&rel=0&loop=1&playlist=${encodeURIComponent(playlist)}`;
