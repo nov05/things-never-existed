@@ -10,6 +10,22 @@ let currentPage = 1;
 
 
 /* =========================
+   Keyboard Hint
+========================= */
+
+const keyboardHint = document.getElementById("keyboard-hint");
+
+function hideKeyboardHint() {
+    keyboardHint.style.display = "none";
+}
+
+["mousemove", "mousedown", "wheel", "touchstart", "keydown"].forEach(event => {
+    document.addEventListener(event, hideKeyboardHint, {
+        once: true
+    });
+});
+
+/* =========================
    YouTube Player API
 ========================= */
 

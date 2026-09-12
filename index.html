@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
     <!-- Header -->
     <header class="site-header">
         <div class="header-content">
@@ -23,32 +22,24 @@
         </div>
     </header>
 
-
     <main class="container">
-
         <!-- Search -->
         <div class="search-wrapper">
             <input type="search" id="search" placeholder="Search..." autocomplete="off">
         </div>
 
-
         <!-- Series -->
         <nav id="series" class="series-nav" aria-label="Video series"></nav>
-
 
         <!-- Current filter -->
         <h2 id="title">All Videos</h2>
 
-
         <!-- Video Grid -->
         <section id="videos" class="video-grid" aria-live="polite"></section>
 
-
         <!-- Pagination -->
         <nav id="pagination" class="pagination" aria-label="Pagination"></nav>
-
     </main>
-
 
     <!-- YouTube Modal -->
     <div id="video-modal" class="modal" aria-hidden="true">
@@ -60,18 +51,19 @@
 
     <script src="app.js"></script>
 
-</body>
+    <footer>
+        <div class="footer-github">
+            <a href="https://github.com/nov05/things-never-existed" target="_blank"
+                title="Browse Things Never Existed on GitHub">
+                <img src="assets/logo_github.png" class="footer-logo" alt="GitHub logo">
+            </a>
+            <a href="https://github.com/nov05" target="_blank" class="github-handle" title="Visit @nov05 on GitHub">
+                @nov05
+            </a>
+        </div>
+    </footer>
 
-<footer>
-    <div class="footer-github">
-        <a href="https://github.com/nov05/things-never-existed" target="_blank"
-            title="Browse Things Never Existed on GitHub">
-            <img src="assets/logo_github.png" class="footer-logo" alt="GitHub logo">
-        </a>
-        <a href="https://github.com/nov05" target="_blank" class="github-handle" title="Visit @nov05 on GitHub">
-            @nov05
-        </a>
-    </div>
-</footer>
+    <div id="keyboard-hint">Press ← → to navigate pages</div>
+</body>
 
 </html>
