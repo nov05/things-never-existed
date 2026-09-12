@@ -1,4 +1,15 @@
 /* =========================
+    Fonts
+========================= */
+
+@font-face {
+    font-family: "Monster Unleashed";
+    src: url("assets/fonts/MonsterUnleashed.woff") format("woff");
+    font-display: swap;
+}
+
+
+/* =========================
    Base
 ========================= */
 
@@ -499,7 +510,6 @@ footer {
 }
 
 
-
 /* =========================
     Keyboard Hint
 ========================= */
@@ -517,16 +527,16 @@ footer {
     justify-content: center;
     background: rgba(0, 0, 0, 0.65);
     color: #fff;
-    font-family: "Permanent Marker", cursive;
-    font-size: clamp(24px, 3vw, 48px);
-    font-weight: 500;
+    font-family: "Monster Unleashed";
+    font-size: clamp(56px, 3vw, 72px);
+    font-weight: 350;
     letter-spacing: 0.02em;
     border-radius: 20px;
     pointer-events: none;
     box-sizing: border-box;
     text-align: center;
-    opacity: 1;
-    transition: opacity 5s ease;
+    opacity: 0.8;
+    transition: opacity 6s ease;
 }
 #keyboard-hint.hide {
     opacity: 0;
@@ -546,3 +556,15 @@ footer {
         opacity: 0;
     }
 }
+
+
+/* =========================
+    Content for small screens
+========================= */
+
+@media (max-width: 768px) {
+    #keyboard-hint {
+        display: none;
+    }
+}
+
