@@ -7,7 +7,6 @@ let filteredVideos = [];
 
 let selectedSeries = "ALL";
 let currentPage = 1;
-let currentVideoIndex = -1;
 
 
 /* =========================
@@ -21,10 +20,8 @@ const videosContainer = document.getElementById("videos");
 const paginationContainer = document.getElementById("pagination");
 
 const modal = document.getElementById("video-modal");
-const modalClose = document.getElementById("modal-close");
 const playerContainer = document.getElementById("player-container");
-const prevVideo = document.getElementById("prev-video");
-const nextVideo = document.getElementById("next-video");
+
 
 
 /* =========================
@@ -254,15 +251,10 @@ function createVideoCard(video) {
 
     fallback.className = "thumbnail-fallback";
 
-    // const fallbackLogo = document.createElement("img");
-    // fallbackLogo.src = "assets/logo.jpg";
-    // fallbackLogo.alt = "";
-    // fallback.appendChild(fallbackLogo);
-
     const videoId = getYouTubeId(video);
 
     /* If a valid YouTube ID is found, set the thumbnail image source.
-      Otherwise, display the fallback content. */
+       Otherwise, display the fallback content. */
     if (videoId && videoId !== "-") {
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -339,18 +331,6 @@ function openVideo(video) {
         return;
     }
 
-    /* Track the current video within the filtered results. */
-    currentVideoIndex = filteredVideos.indexOf(video);
-
-    /* Show navigation buttons only when there is a previous or next video. */
-    prevVideo.style.display =
-        currentVideoIndex > 0 ? "flex" : "none";
-
-    nextVideo.style.display =
-        currentVideoIndex < filteredVideos.length - 1
-            ? "flex"
-            : "none";
-
     /*
       iframe is created ONLY after clicking.
     */
@@ -362,7 +342,7 @@ function openVideo(video) {
     /* Enable autoplay and continuous looping. */
     iframe.src =
         `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` +
-        `?autoplay=1&rel=0&loop=1&playlist=${encodeURIComponent(videoId)}`;
+        `?autoplay=1&rel=0&loop=1&playlist=${encodeURIComponent(playlist)}`;
 
     iframe.title = video.title || "YouTube video";
 
@@ -379,24 +359,6 @@ function openVideo(video) {
     document.body.style.overflow = "hidden";
 }
 
-function playPreviousVideo() {
-    if (currentVideoIndex <= 0) {
-        return;
-    }
-
-    currentVideoIndex--;
-    openVideo(filteredVideos[currentVideoIndex]);
-}
-
-function playNextVideo() {
-    if (currentVideoIndex >= filteredVideos.length - 1) {
-        return;
-    }
-
-    currentVideoIndex++;
-    openVideo(filteredVideos[currentVideoIndex]);
-}
-
 
 /* =========================
    Close Video
@@ -411,36 +373,24 @@ function closeVideo() {
     */
     playerContainer.innerHTML = "";
 
-    /*
-      Reset navigation buttons.
-    */
-    prevVideo.style.display = "none";
-    nextVideo.style.display = "none";
-
     document.body.style.overflow = "";
 }
 
-
-modalClose.addEventListener("click", closeVideo);
-
 /* Close modal when clicking outside the player */
-// modal.querySelector(".modal-backdrop")
-//     .addEventListener("click", closeVideo);
+modal.querySelector(".modal-backdrop")
+    .addEventListener("click", closeVideo);
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
     }
-    if (event.key === "ArrowUp") {
-        playPreviousVideo();
-    }
-    if (event.key === "ArrowDown") {
-        playNextVideo();
-    }
+    // if (event.key === "ArrowUp") {
+    //     playPreviousVideo();
+    // }
+    // if (event.key === "ArrowDown") {
+    //     playNextVideo();
+    // }
 });
-
-prevVideo.addEventListener("click", playPreviousVideo);
-nextVideo.addEventListener("click", playNextVideo);
 
 
 /* =========================
