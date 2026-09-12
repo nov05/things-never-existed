@@ -514,13 +514,21 @@ footer {
     Keyboard Hint
 ========================= */
 
-#keyboard-hint {
+/* The keyboard hint is a large overlay that appears 
+   when the user presses a key to indicate that they 
+   can use the keyboard to navigate the video grid. 
+   It fades out after a few seconds.
+
+   The player keyboard hint is a smaller overlay that appears 
+   when the user presses a key while the video player is open. 
+   It fades out after a few seconds. */
+#keyboard-hint,
+#player-keyboard-hint {
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 60vw;
-    height: 22vh;
+    left: 15vw;
+    right: 15vw;
+    top: 30vh;
+    bottom: 30vh;
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -528,17 +536,41 @@ footer {
     background: rgba(0, 0, 0, 0.65);
     color: #fff;
     font-family: "Monster Unleashed";
-    font-size: clamp(56px, 3vw, 72px);
-    font-weight: 350;
+    font-weight: 400;
     letter-spacing: 0.02em;
     border-radius: 20px;
     pointer-events: none;
     box-sizing: border-box;
     text-align: center;
-    opacity: 0.8;
+    opacity: 1;
+}
+#keyboard-hint {
+    font-size: 72px;
     transition: opacity 6s ease;
 }
-#keyboard-hint.hide {
+#player-keyboard-hint {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    left: auto;
+    right: 30px;
+    top: 30px;
+    bottom: auto;
+    width: auto;
+    height: auto;
+    padding: 30px 40px;
+    font-size: 36px;
+    transition: opacity 6s ease;
+}
+.player-hint-content {
+    text-align: left;
+}
+#player-keyboard-hint.show {
+    display: flex;
+}
+#keyboard-hint.hide,
+#player-keyboard-hint.hide {
     opacity: 0;
 }
 
@@ -562,8 +594,13 @@ footer {
     Content for small screens
 ========================= */
 
+/* Hide the keyboard hints on small screens, 
+   as it may not be relevant for touch devices. */
 @media (max-width: 768px) {
     #keyboard-hint {
+        display: none;
+    }
+    #player-keyboard-hint {
         display: none;
     }
 }

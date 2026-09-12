@@ -38,23 +38,18 @@ let youtubePlayer = null;
 let youtubeApiReady = false;
 let pendingVideo = null;
 
-
 /*
   Load the YouTube IFrame Player API.
 */
 const youtubeScript = document.createElement("script");
-
 youtubeScript.src = "https://www.youtube.com/iframe_api";
-
 document.head.appendChild(youtubeScript);
-
 
 /*
   Called by the YouTube API when it is ready.
 */
 window.onYouTubeIframeAPIReady = function () {
     youtubeApiReady = true;
-
     if (pendingVideo) {
         createYouTubePlayer(pendingVideo);
         pendingVideo = null;
@@ -71,7 +66,6 @@ const seriesContainer = document.getElementById("series");
 const titleElement = document.getElementById("title");
 const videosContainer = document.getElementById("videos");
 const paginationContainer = document.getElementById("pagination");
-
 const modal = document.getElementById("video-modal");
 const playerContainer = document.getElementById("player-container");
 
@@ -287,16 +281,13 @@ function renderVideos() {
 
 function createVideoCard(video) {
     const card = document.createElement("article");
-
     card.className = "video-card";
 
     const thumbnail = document.createElement("img");
-
     thumbnail.className = "video-thumbnail";
     thumbnail.alt = video.title || "";
 
     const fallback = document.createElement("div");
-
     fallback.className = "thumbnail-fallback";
 
     const videoId = getYouTubeId(video);
@@ -307,46 +298,34 @@ function createVideoCard(video) {
       Otherwise, display the fallback content.
     */
     if (videoId && videoId !== "-") {
-
         thumbnail.src =
             `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
         /*
           Test fallback by using a non-existent image URL.
-
           thumbnail.src =
               "https://example.com/does-not-exist.jpg";
         */
-
         thumbnail.addEventListener(
             "error",
             () => {
-
                 /* Fallback: header background */
                 thumbnail.style.display = "none";
                 fallback.style.display = "flex";
-
             },
             { once: true }
         );
-
     } else {
-
         /* Fallback: header background */
         thumbnail.style.display = "none";
         fallback.style.display = "flex";
     }
 
-
     const title = document.createElement("h3");
-
     title.className = "video-title";
     title.textContent = video.title || "";
-
     card.appendChild(thumbnail);
     card.appendChild(fallback);
     card.appendChild(title);
-
     card.addEventListener("click", () => {
         openVideo(video);
     });
@@ -360,24 +339,18 @@ function createVideoCard(video) {
 ========================= */
 
 function getYouTubeId(video) {
-
     if (video.youtube_id) {
         return String(video.youtube_id).trim();
     }
-
     if (video.youtube) {
-
         const value = String(video.youtube).trim();
-
         const match = value.match(
             /(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([^?&/]+)/
         );
-
         if (match) {
             return match[1];
         }
     }
-
     return "";
 }
 
@@ -386,93 +359,114 @@ function getYouTubeId(video) {
    YouTube Player
 ========================= */
 
+// function createYouTubePlayer(video) {
+//     const videoId = getYouTubeId(video);
+
+//     if (!videoId) return;
+
+//     const playlist = filteredVideos
+//         .map(item => getYouTubeId(item))
+//         .filter(Boolean);
+//     const currentIndex = playlist.indexOf(videoId);
+
+//     if (currentIndex === -1) return;
+
+//     if (youtubePlayer) {
+//         youtubePlayer.destroy();
+//         youtubePlayer = null;
+//     }
+
+//     playerContainer.innerHTML = "";
+
+//     youtubePlayer = new YT.Player(
+//         "player-container",
+//         {
+//             width: "100%",
+//             height: "100%",
+//             videoId: videoId,
+//             playerVars: {
+//                 autoplay: 1,
+//                 rel: 0,
+//                 playsinline: 1,
+//                 loop: 1
+//             },
+//             events: {
+//                 onReady: event => {
+//                     event.target.loadPlaylist(
+//                         playlist,
+//                         currentIndex
+//                     );
+//                     event.target.setLoop(false);
+//                 }
+//             }
+//         }
+//     );
+//     modal.classList.add("open");
+//     modal.setAttribute("aria-hidden", "false");
+//     document.body.style.overflow = "hidden";
+// }
+
 function createYouTubePlayer(video) {
-
     const videoId = getYouTubeId(video);
-
-    if (!videoId) {
-        return;
-    }
-
-
-    /*
-      Use the already filtered videos
-      as the YouTube playlist.
-    */
+    if (!videoId) return;
     const playlist = filteredVideos
         .map(item => getYouTubeId(item))
         .filter(Boolean);
-
-
-    /*
-      Find the clicked video inside
-      the filtered playlist.
-    */
     const currentIndex = playlist.indexOf(videoId);
-
-    if (currentIndex === -1) {
-        return;
-    }
-
-
-    /*
-      Destroy the previous player.
-    */
+    if (currentIndex === -1) return;
     if (youtubePlayer) {
         youtubePlayer.destroy();
         youtubePlayer = null;
     }
-
     playerContainer.innerHTML = "";
-
-
-    /*
-      Create the YouTube player.
-    */
+    const playerKeyboardHint = document.getElementById("player-keyboard-hint");
+    if (playerKeyboardHint) {
+        playerKeyboardHint.classList.remove("hide");
+        playerKeyboardHint.classList.add("show");
+    }
     youtubePlayer = new YT.Player(
         "player-container",
         {
             width: "100%",
             height: "100%",
-
             videoId: videoId,
-
             playerVars: {
-                autoplay: 1,
+                autoplay: 0,
                 rel: 0,
-                playsinline: 1
+                playsinline: 1,
+                loop: 1
             },
-
             events: {
-
-                /*
-                  Load the filtered playlist after
-                  the player is ready.
-                */
                 onReady: event => {
-
                     event.target.loadPlaylist(
                         playlist,
                         currentIndex
                     );
-
+                    event.target.setLoop(false);
+                    // Display the keyboard hint when the player is ready.
+                    // Wait for user interaction to start the video
+                    const startPlayer = () => {
+                        if (playerKeyboardHint) {
+                            playerKeyboardHint.classList.add("hide");
+                        }
+                        event.target.playVideo();
+                        document.removeEventListener("mousemove", startPlayer);
+                        document.removeEventListener("mousedown", startPlayer);
+                        document.removeEventListener("wheel", startPlayer);
+                        document.removeEventListener("touchstart", startPlayer);
+                        document.removeEventListener("keydown", startPlayer);
+                    };
+                    document.addEventListener("mousemove", startPlayer);
+                    document.addEventListener("mousedown", startPlayer);
+                    document.addEventListener("wheel", startPlayer);
+                    document.addEventListener("touchstart", startPlayer);
+                    document.addEventListener("keydown", startPlayer);
                 }
-
             }
         }
     );
-
-
-    /*
-      Open the modal.
-    */
     modal.classList.add("open");
-
-    modal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
+    modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
 }
 
@@ -488,23 +482,17 @@ function openVideo(video) {
     if (!videoId) {
         return;
     }
-
-
     /*
       Wait for the YouTube API if it
       has not loaded yet.
     */
     if (!youtubeApiReady) {
-
         pendingVideo = video;
-
         return;
     }
-
-
     createYouTubePlayer(video);
 }
-
+ 
 
 /* =========================
    Close Video
@@ -548,17 +536,11 @@ modal.querySelector(".modal-backdrop")
 
 /*
   Close modal with Escape.
-*/
-document.addEventListener(
-    "keydown",
-    event => {
-
+    document.addEventListener("keydown", event => {
         if (event.key === "Escape") {
             closeVideo();
         }
-
-    }
-);
+*/
 
 
 /* =========================
@@ -785,40 +767,57 @@ function getVisiblePages(
     return pages;
 }
 
-// Use left and right arrows to navigate between pages if the modal is not open. 
-// If the modal is open, YouTube player navigation will be added later.
+
 document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeVideo();
+        return;
+    }
+
+    if (modal.classList.contains("open")) {
+        if (!youtubePlayer) return;
+
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+            youtubePlayer.previousVideo();
+            return;
+        }
+
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+            youtubePlayer.nextVideo();
+            return;
+        }
+
+        return;
+    }
+
+    // Use left and right arrows to navigate between pages if the modal is not open. 
+    // If the modal is open, YouTube player navigation will be added later.
     if (event.key === "ArrowLeft") {
-        if (modal.classList.contains("open")) {
-            /* YouTube player navigation will be added later. */
-        } else {
-            if (currentPage > 1) {
-                currentPage--;
-                renderVideos();
-                renderPagination();
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
+        if (currentPage > 1) {
+            currentPage--;
+            renderVideos();
+            renderPagination();
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
     }
     if (event.key === "ArrowRight") {
-        if (modal.classList.contains("open")) {
-            /* YouTube player navigation will be added later. */
-        } else {
-            const totalPages = Math.ceil(
-                filteredVideos.length / PAGE_SIZE
-            );
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderVideos();
-                renderPagination();
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
+        const totalPages = Math.ceil(
+            filteredVideos.length / PAGE_SIZE
+        );
+
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderVideos();
+            renderPagination();
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
     }
 });

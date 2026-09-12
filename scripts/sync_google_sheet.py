@@ -129,7 +129,7 @@ def main():
             fail(
                 f"Row {row_number}: YouTube ID is empty."
             )
-
+            
         if not series:
             fail(
                 f"Row {row_number}: Series is empty."
@@ -149,11 +149,9 @@ def main():
             "added_date": added_date,
             "status": status,
         }
-
-        ## IMPORTANT:
-        ## Do NOT sort here.
-        ## Google Sheet row order is the website order.
-        output.append(video)
+        ## In Google Sheet oldest videos are at the top.
+        # output.append(video)
+        output.insert(0, video) # Reverse order for newest first
 
     if not output:
         fail(
@@ -176,7 +174,7 @@ def main():
             delete=False
         ) as temp:
             json.dump(
-                output[::-1],  # Reverse order for newest first
+                output,  
                 temp,
                 ensure_ascii=False,
                 indent=2
