@@ -13,14 +13,19 @@ let currentPage = 1;
    Keyboard Hint
 ========================= */
 
-const keyboardHint = document.getElementById("keyboard-hint");
+document.addEventListener("DOMContentLoaded", () => {
+    const keyboardHint = document.getElementById("keyboard-hint");
+    if (!keyboardHint) return;
 
-function hideKeyboardHint() {
-    keyboardHint.classList.add("hide");
-}
+    const hideKeyboardHint = () => {
+        keyboardHint.classList.add("hide");
+    };
 
-["mousemove", "mousedown", "wheel", "touchstart", "keydown"].forEach(event => {
-    document.addEventListener(event, hideKeyboardHint);
+    document.addEventListener("mousemove", hideKeyboardHint, { once: true });
+    document.addEventListener("mousedown", hideKeyboardHint, { once: true });
+    document.addEventListener("wheel", hideKeyboardHint, { once: true });
+    document.addEventListener("touchstart", hideKeyboardHint, { once: true });
+    document.addEventListener("keydown", hideKeyboardHint, { once: true });
 });
 
 
