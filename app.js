@@ -396,7 +396,23 @@ function createYouTubePlayer(video) {
                     document.addEventListener("wheel", startPlayer);
                     document.addEventListener("touchstart", startPlayer);
                     document.addEventListener("keydown", startPlayer);
-                }
+                },
+                // Important tests: 
+                //   Check what the active element is when the player is focused.
+                //   Check if the player is still focused when the video ends.
+                onStateChange: event => {
+                    console.log("👉 onStateChange fired:", event.data);
+                    if (event.data === YT.PlayerState.ENDED) {
+                        const iframe = document.querySelector("#player-container");
+                        console.log("👉 Video ended. Checking active element ...");
+                        console.log("👉 activeElement:", document.activeElement);
+                        console.log("👉 Is iframe the activeElement:", document.activeElement === iframe);
+                        console.log(
+                            "👉 Player focused:",
+                            document.activeElement?.id === "player-container"
+                        );
+                    }
+                },
             }
         }
     );
@@ -427,7 +443,7 @@ function openVideo(video) {
     }
     createYouTubePlayer(video);
 }
- 
+
 
 /* =========================
    Close Video
