@@ -679,32 +679,25 @@ function createPageButton(
     page,
     disabled
 ) {
-
     const button =
         document.createElement("button");
-
     button.type = "button";
     button.className = "page-button";
     button.textContent = label;
     button.disabled = disabled;
-
     button.addEventListener(
         "click",
         () => {
-
             currentPage = page;
-
             renderVideos();
             renderPagination();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
+            /* Scroll to the top of the page when navigating to a new page. */
+            // window.scrollTo({
+            //     top: 0,
+            //     behavior: "smooth"
+            // });
         }
     );
-
     return button;
 }
 
@@ -713,67 +706,49 @@ function getVisiblePages(
     totalPages,
     current
 ) {
-
     if (totalPages <= 7) {
-
         return Array.from(
             { length: totalPages },
             (_, index) => index + 1
         );
-
     }
-
     const pages = [];
-
     pages.push(1);
-
     if (current > 4) {
         pages.push("...");
     }
-
     const start =
         Math.max(
             2,
             current - 1
         );
-
     const end =
         Math.min(
             totalPages - 1,
             current + 1
         );
-
     for (
         let page = start;
         page <= end;
         page++
     ) {
-
         pages.push(page);
-
     }
-
     if (
         current <
         totalPages - 3
     ) {
-
         pages.push("...");
-
     }
-
     pages.push(totalPages);
-
     return pages;
 }
-
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeVideo();
         return;
     }
-
     if (modal.classList.contains("open")) {
         if (!youtubePlayer) return;
 
@@ -791,7 +766,6 @@ document.addEventListener("keydown", event => {
 
         return;
     }
-
     // Use left and right arrows to navigate between pages if the modal is not open. 
     // If the modal is open, YouTube player navigation will be added later.
     if (event.key === "ArrowLeft") {
@@ -799,25 +773,26 @@ document.addEventListener("keydown", event => {
             currentPage--;
             renderVideos();
             renderPagination();
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            /* Scroll to the top of the page when navigating to a new page. */
+            // window.scrollTo({
+            //     top: 0,
+            //     behavior: "smooth"
+            // });
         }
     }
     if (event.key === "ArrowRight") {
         const totalPages = Math.ceil(
             filteredVideos.length / PAGE_SIZE
         );
-
         if (currentPage < totalPages) {
             currentPage++;
             renderVideos();
             renderPagination();
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            /* Scroll to the top of the page when navigating to a new page. */
+            // window.scrollTo({
+            //     top: 0,
+            //     behavior: "smooth"
+            // });
         }
     }
 });
