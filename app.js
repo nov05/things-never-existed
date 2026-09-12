@@ -765,26 +765,43 @@ function getVisiblePages(
     return pages;
 }
 
-// Use left and right arrows to navigate between pages.
-document.getElementById("page-prev").addEventListener("click", () => {
-    if (currentPage > 1) {
-        currentPage--;
-        renderVideos();
-        renderPagination();
+// Use left and right arrows to navigate between pages if the modal is not open. 
+// If the modal is open, YouTube player navigation will be added later.
+document.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") {
+        if (modal.classList.contains("open")) {
+            /* YouTube player navigation will be added later. */
+        } else {
+            if (currentPage > 1) {
+                currentPage--;
+                renderVideos();
+                renderPagination();
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+    }
+    if (event.key === "ArrowRight") {
+        if (modal.classList.contains("open")) {
+            /* YouTube player navigation will be added later. */
+        } else {
+            const totalPages = Math.ceil(
+                filteredVideos.length / PAGE_SIZE
+            );
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderVideos();
+                renderPagination();
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
     }
 });
-document.getElementById("page-next").addEventListener("click", () => {
-    const totalPages = Math.ceil(
-        filteredVideos.length / PAGE_SIZE
-    );
-
-    if (currentPage < totalPages) {
-        currentPage++;
-        renderVideos();
-        renderPagination();
-    }
-});
-
 
 /* =========================
    Start
