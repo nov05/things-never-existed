@@ -2,6 +2,10 @@
 
 * Built by Nov05 on Sep 12, 2026
 
+## 👉 Website Layout on PC and Mobile
+
+<img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/pic001/imgonline-com-ua-twotoone-NqEQKE7aFny.jpg" width=800>  
+
 ## 👉 Features
 
 ### Video Gallery
