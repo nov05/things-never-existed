@@ -652,7 +652,7 @@ footer {
     #mobile-player-close {
         display: block;
         position: absolute;
-        top: 12px;
+        top: 36px;
         right: 12px;
         z-index: 10;
         width: 40px;
