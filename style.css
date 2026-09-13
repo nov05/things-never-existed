@@ -594,6 +594,10 @@ footer {
     gap: 8px;
 }
 
+.normal-char {
+    font-family: sans-serif;
+}
+
 @keyframes keyboardHint {
     0% {
         opacity: 0;
