@@ -400,7 +400,7 @@ function onPlayerStateChange(event, playlist) {
     if (document.activeElement?.id !== "player-container") return;
     event.target.setLoop(false);
     if (event.data !== YT.PlayerState.ENDED) return;
-    // const currentIndex = event.target.getPlaylistIndex();
+    // const currentIndex = event.target.getPlaylistIndex(); // Always 0
     const videoId = event.target.getVideoData().video_id;
     const currentIndex = playlist.indexOf(videoId);
     const nextIndex = currentIndex < filteredVideos.length - 1 ? currentIndex + 1 : currentIndex;
