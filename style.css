@@ -650,20 +650,22 @@ footer {
     }
 
     #mobile-player-close {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
-        top: 36px;
+        top: 13%;
         right: 12px;
         z-index: 10;
         width: 40px;
         height: 40px;
-        padding: 0;
         border: 0;
         border-radius: 50%;
         background: rgba(0, 0, 0, 0.55);
         color: #fff;
         font-size: 28px;
-        line-height: 40px;
+        padding-bottom: 5px;
         cursor: pointer;
     }
+
 }
