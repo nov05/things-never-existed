@@ -388,18 +388,21 @@ const playerStates = {
     "5": "CUED"
 };
 
+
 function onPlayerStateChange(event, playlist) {
-    console.log(
-        "👉 onPlayerStateChange:",
-        `${event.data} ${playerStates[event.data]}`
-    );
+    // console.log(
+    //     "👉 onPlayerStateChange:",
+    //     `${event.data} ${playerStates[event.data]}`
+    // );
     /* When the playlist ends, check if the player is focused 
        and load the next video in the playlist. 
        Here, event.target === youtubePlayer */
     if (document.activeElement?.id !== "player-container") return;
     event.target.setLoop(false);
-    const currentIndex = event.target.getPlaylistIndex();
     if (event.data !== YT.PlayerState.ENDED) return;
+    // const currentIndex = event.target.getPlaylistIndex();
+    const videoId = event.target.getVideoData().video_id;
+    const currentIndex = playlist.indexOf(videoId);
     const nextIndex = currentIndex < filteredVideos.length - 1 ? currentIndex + 1 : currentIndex;
     event.target.loadPlaylist(
         playlist,
