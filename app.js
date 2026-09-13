@@ -1,6 +1,7 @@
 // Number of videos per page
 // const PAGE_SIZE = 20;
 const PAGE_SIZE = 14;
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
 let videos = [];
 let filteredVideos = [];
@@ -66,6 +67,8 @@ const videosContainer = document.getElementById("videos");
 const paginationContainer = document.getElementById("pagination");
 const modal = document.getElementById("video-modal");
 const playerContainer = document.getElementById("player-container");
+/* Mobile */
+document.getElementById("mobile-player-close").addEventListener("click", closeVideo);
 
 
 /* =========================
@@ -467,9 +470,40 @@ function createYouTubePlayer(video) {
             }
         }
     );
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+}
+
+
+function createMobileYouTubePlayer(video) {
+    const videoId = getYouTubeId(video);
+    if (!videoId) return;
+    const playlist = filteredVideos
+        .map(item => getYouTubeId(item))
+        .filter(Boolean);
+    const currentIndex = playlist.indexOf(videoId);
+    if (currentIndex === -1) return;
+    if (youtubePlayer) {
+        youtubePlayer.destroy();
+        youtubePlayer = null;
+    }
+    playerContainer.innerHTML = "";
+    youtubePlayer = new YT.Player(
+        "player-container",
+        {
+            width: "100%",
+            height: "100%",
+            videoId: videoId,
+            /* https://developers.google.com/youtube/player_parameters */
+            playerVars: {
+                playsinline: 1,
+                autoplay: 1,
+                loop: 0,
+                controls: 1,
+                rel: 0,
+                origin: window.location.origin,
+                playlist: playlist.join(","),
+            },
+        }
+    );
 }
 
 
@@ -490,7 +524,16 @@ function openVideo(video) {
         pendingVideo = video;
         return;
     }
-    createYouTubePlayer(video);
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    // createYouTubePlayer(video);
+    if (isMobile) {
+        createMobileYouTubePlayer(video);
+        document.getElementById("player-container").focus();
+    } else {
+        createYouTubePlayer(video);
+    }
 }
 
 
