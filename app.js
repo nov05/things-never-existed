@@ -37,14 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
 let youtubePlayer = null;
 let youtubeApiReady = false;
 let pendingVideo = null;
-
 /*
   Load the YouTube IFrame Player API.
 */
 const youtubeScript = document.createElement("script");
 youtubeScript.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(youtubeScript);
-
 /*
   Called by the YouTube API when it is ready.
 */
@@ -340,6 +338,73 @@ function getYouTubeId(video) {
    YouTube Player
 ========================= */
 
+function onPlayerReady(event, videoId, playerKeyboardHint) {
+    /* Load the playlist and set loop when the player is ready. */
+    // event.target.loadPlaylist(
+    //     playlist,
+    //     currentIndex
+    // );
+    // event.target.setLoop(false);
+    /* Loop the single video instead of all the filtered videos. */
+    event.target.loadPlaylist([videoId], 0);
+    event.target.setLoop(true);
+
+    // Display the keyboard hint when the player is ready.
+    // Wait for user interaction to start the video
+    const startPlayer = () => {
+        if (playerKeyboardHint) {
+            playerKeyboardHint.classList.add("hide");
+        }
+        event.target.playVideo();
+        document.removeEventListener("mousemove", startPlayer);
+        document.removeEventListener("mousedown", startPlayer);
+        document.removeEventListener("wheel", startPlayer);
+        document.removeEventListener("touchstart", startPlayer);
+        document.removeEventListener("keydown", startPlayer);
+    };
+    document.addEventListener("mousemove", startPlayer);
+    document.addEventListener("mousedown", startPlayer);
+    document.addEventListener("wheel", startPlayer);
+    document.addEventListener("touchstart", startPlayer);
+    document.addEventListener("keydown", startPlayer);
+}
+
+
+/* YT.PlayerState.UNSTARTED = -1: Video has not started 
+   YT.PlayerState.ENDED     =  0: Video ended 
+   YT.PlayerState.PLAYING   =  1: Video is playing 
+   YT.PlayerState.PAUSED    =  2: Video is paused 
+   YT.PlayerState.BUFFERING =  3: Video is buffering 
+   YT.PlayerState.CUED      =  5: Video is cued and ready to play */
+const playerStates = {
+    "-1": "UNSTARTED",
+    "0": "ENDED",
+    "1": "PLAYING",
+    "2": "PAUSED",
+    "3": "BUFFERING",
+    "5": "CUED"
+};
+
+function onPlayerStateChange(event, playlist) {
+    console.log(
+        "👉 onPlayerStateChange:",
+        `${event.data} ${playerStates[event.data]}`
+    );
+    /* When the playlist ends, check if the player is focused 
+       and load the next video in the playlist. 
+       Here, event.target === youtubePlayer */
+    if (document.activeElement?.id !== "player-container") return;
+    event.target.setLoop(false);
+    const currentIndex = event.target.getPlaylistIndex();
+    if (event.data !== YT.PlayerState.ENDED) return;
+    const nextIndex = currentIndex < filteredVideos.length - 1 ? currentIndex + 1 : currentIndex;
+    event.target.loadPlaylist(
+        playlist,
+        nextIndex
+    );
+}
+
+
 function createYouTubePlayer(video) {
     const videoId = getYouTubeId(video);
     if (!videoId) return;
@@ -353,66 +418,52 @@ function createYouTubePlayer(video) {
         youtubePlayer = null;
     }
     playerContainer.innerHTML = "";
+    /* Show the keyboard hint when the player is created. */
     const playerKeyboardHint = document.getElementById("player-keyboard-hint");
     if (playerKeyboardHint) {
         playerKeyboardHint.classList.remove("hide");
         playerKeyboardHint.classList.add("show");
     }
+    /* When the player is created, it will loop the single video. */
     youtubePlayer = new YT.Player(
         "player-container",
         {
             width: "100%",
             height: "100%",
             videoId: videoId,
+            /* https://developers.google.com/youtube/player_parameters */
             playerVars: {
                 playsinline: 1,
                 autoplay: 1,
-                loop: 0,
+                loop: 1,
                 controls: 1,
                 rel: 0,
+                origin: window.location.origin,
             },
             events: {
                 onReady: event => {
-                    event.target.loadPlaylist(
-                        playlist,
-                        currentIndex
-                    );
-                    event.target.setLoop(false);
-                    // Display the keyboard hint when the player is ready.
-                    // Wait for user interaction to start the video
-                    const startPlayer = () => {
-                        if (playerKeyboardHint) {
-                            playerKeyboardHint.classList.add("hide");
-                        }
-                        event.target.playVideo();
-                        document.removeEventListener("mousemove", startPlayer);
-                        document.removeEventListener("mousedown", startPlayer);
-                        document.removeEventListener("wheel", startPlayer);
-                        document.removeEventListener("touchstart", startPlayer);
-                        document.removeEventListener("keydown", startPlayer);
-                    };
-                    document.addEventListener("mousemove", startPlayer);
-                    document.addEventListener("mousedown", startPlayer);
-                    document.addEventListener("wheel", startPlayer);
-                    document.addEventListener("touchstart", startPlayer);
-                    document.addEventListener("keydown", startPlayer);
+                    onPlayerReady(event, videoId, playerKeyboardHint);
                 },
-                // Important tests: 
-                //   Check what the active element is when the player is focused.
-                //   Check if the player is still focused when the video ends.
                 onStateChange: event => {
-                    console.log("👉 onStateChange fired:", event.data);
-                    if (event.data === YT.PlayerState.ENDED) {
-                        const iframe = document.querySelector("#player-container");
-                        console.log("👉 Video ended. Checking active element ...");
-                        console.log("👉 activeElement:", document.activeElement);
-                        console.log("👉 Is iframe the activeElement:", document.activeElement === iframe);
-                        console.log(
-                            "👉 Player focused:",
-                            document.activeElement?.id === "player-container"
-                        );
-                    }
+                    onPlayerStateChange(event, playlist);
                 },
+                /* Important tests: 
+                     Check what the active element is when the player is focused.
+                     Check if the player is still focused when the video ends. 
+                */
+                // onStateChange: event => {
+                //     console.log("👉 onStateChange fired:", event.data);
+                //     if (event.data === YT.PlayerState.ENDED) {
+                //         const iframe = document.querySelector("#player-container");
+                //         console.log("👉 Video ended. Checking active element ...");
+                //         console.log("👉 activeElement:", document.activeElement);
+                //         console.log("👉 Is iframe the activeElement:", document.activeElement === iframe);
+                //         console.log(
+                //             "👉 Player focused:",
+                //             document.activeElement?.id === "player-container"
+                //         );
+                //     }
+                // },
             }
         }
     );
@@ -427,9 +478,7 @@ function createYouTubePlayer(video) {
 ========================= */
 
 function openVideo(video) {
-
     const videoId = getYouTubeId(video);
-
     if (!videoId) {
         return;
     }
@@ -450,27 +499,19 @@ function openVideo(video) {
 ========================= */
 
 function closeVideo() {
-
     modal.classList.remove("open");
-
     modal.setAttribute(
         "aria-hidden",
         "true"
     );
-
-
     /*
       Destroy the YouTube player.
     */
     if (youtubePlayer) {
-
         youtubePlayer.destroy();
-
         youtubePlayer = null;
     }
-
     playerContainer.innerHTML = "";
-
     document.body.style.overflow = "";
 }
 
@@ -499,19 +540,15 @@ modal.querySelector(".modal-backdrop")
 ========================= */
 
 function loadUrlState() {
-
     const params =
         new URLSearchParams(
             window.location.search
         );
-
     const category = params.get("category");
     const search = params.get("search");
-
     if (category) {
         selectedSeries = category;
     }
-
     if (search) {
         searchInput.value = search;
     }
@@ -525,11 +562,8 @@ function loadUrlState() {
 searchInput.addEventListener(
     "input",
     () => {
-
         currentPage = 1;
-
         applyFilters();
-
     }
 );
 
@@ -539,36 +573,26 @@ searchInput.addEventListener(
 ========================= */
 
 function renderPagination() {
-
     paginationContainer.innerHTML = "";
-
     const totalPages = Math.ceil(
         filteredVideos.length / PAGE_SIZE
     );
-
     if (totalPages <= 1) {
         return;
     }
-
-
     /* Previous */
     const previous = createPageButton(
         "‹",
         currentPage - 1,
         currentPage === 1
     );
-
     paginationContainer.appendChild(
         previous
     );
-
-
     /*
       Show page numbers.
-
       For a small number of pages:
       1 2 3 4 5
-
       For many pages:
       1 ... 4 5 6 ... 20
     */
@@ -576,49 +600,36 @@ function renderPagination() {
         totalPages,
         currentPage
     );
-
     pages.forEach(page => {
-
         if (page === "...") {
-
             const dots =
                 document.createElement("span");
-
             dots.textContent = "…";
             dots.style.color = "#666";
             dots.style.padding = "0 4px";
-
             paginationContainer.appendChild(
                 dots
             );
-
             return;
         }
-
         const button = createPageButton(
             String(page),
             page,
             false
         );
-
         if (page === currentPage) {
             button.classList.add("current");
         }
-
         paginationContainer.appendChild(
             button
         );
-
     });
-
-
     /* Next */
     const next = createPageButton(
         "›",
         currentPage + 1,
         currentPage === totalPages
     );
-
     paginationContainer.appendChild(
         next
     );
@@ -700,25 +711,64 @@ document.addEventListener("keydown", event => {
         closeVideo();
         return;
     }
-    if (modal.classList.contains("open")) {
-        if (!youtubePlayer) return;
 
-        if (event.key === "ArrowUp") {
-            event.preventDefault();
-            youtubePlayer.previousVideo();
-            return;
+    /* Use spacebar to toggle play/pause if the player is not focused. 
+       The player uses the same key for play/pause. */
+    if (event.key === " ") {
+        event.preventDefault();
+        const state = youtubePlayer.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+            youtubePlayer.pauseVideo();
+        } else {
+            youtubePlayer.playVideo();
         }
-
-        if (event.key === "ArrowDown") {
-            event.preventDefault();
-            youtubePlayer.nextVideo();
-            return;
-        }
-
         return;
     }
-    // Use left and right arrows to navigate between pages if the modal is not open. 
-    // If the modal is open, YouTube player navigation will be added later.
+
+    /* Use up and down arrows to navigate between videos in the modal if it is open.
+       If the player is focused, the up and down arrows will not work. */
+    if (modal.classList.contains("open")) {
+        /* Check if the YouTube player exists before proceeding */
+        if (!youtubePlayer) return;
+        /* Proceed if the player is not focused */
+        const playerFocused = document.activeElement?.id === "player-container";
+        if (playerFocused) return;
+        /* If the player is not focused, allow navigation with up and down arrows */
+        if (event.key === "ArrowUp") {
+            /* Prevent the browser from scrolling the page up. */
+            event.preventDefault();
+            /* If the playlist is a single video, the following code won't work.*/
+            // youtubePlayer.previousVideo();
+            const currentVideoId = youtubePlayer.getVideoData().video_id;
+            const currentIndex = filteredVideos.findIndex(video => getYouTubeId(video) === currentVideoId);
+            if (currentIndex > 0) {
+                /* Switch to the previous video and loop it */
+                const previousVideoId = getYouTubeId(filteredVideos[currentIndex - 1]);
+                youtubePlayer.loadPlaylist([previousVideoId], 0);
+                youtubePlayer.setLoop(true);
+            }
+            return;
+        }
+        if (event.key === "ArrowDown") {
+            /* Prevent the browser from scrolling the page down. */
+            event.preventDefault();
+            /* If the playlist is a single video, the following code won't work.*/
+            // youtubePlayer.nextVideo();
+            const currentVideoId = youtubePlayer.getVideoData().video_id;
+            const currentIndex = filteredVideos.findIndex(video => getYouTubeId(video) === currentVideoId);
+            if (currentIndex < filteredVideos.length - 1) {
+                /* Switch to the next video and play it */
+                const nextVideoId = getYouTubeId(filteredVideos[currentIndex + 1]);
+                youtubePlayer.loadPlaylist([nextVideoId], 0);
+                youtubePlayer.setLoop(true);
+            }
+            return;
+        }
+        return;
+    }
+
+    /* Use left and right arrows to navigate between pages if the modal is not open. 
+       If the modal is open, YouTube player navigation will be added later. */
     if (event.key === "ArrowLeft") {
         if (currentPage > 1) {
             currentPage--;
@@ -747,6 +797,7 @@ document.addEventListener("keydown", event => {
         }
     }
 });
+
 
 /* =========================
    Start
