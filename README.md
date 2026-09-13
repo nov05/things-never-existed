@@ -1,5 +1,7 @@
 # 🟢 **Things Never Existed**
 
+https://nov05.github.io/things-never-existed/  
+
 * Built by Nov05 on Sep 12, 2026
 
 ## 👉 Website Layout on PC and Mobile
@@ -90,20 +92,23 @@
 
 ```text
 <repo>/
-│
 ├── index.html
 ├── style.css
 ├── app.js
-│
-├── assets/
-│   ├── logo.jpg
-│   └── header-background.jpg
-│
+
 ├── data/
 │   └── videos.json
 │
 ├── scripts/
 │   └── sync_sheet.py
+│
+├── assets/
+│   ├── logo.jpg
+│   ├── header-background.jpg
+│   └── fonts/
+│       └── MonsterUnleashed.woff
+│
+├── favicon_io/  ## icon and manifest files
 │
 └── .github/
     └── workflows/
