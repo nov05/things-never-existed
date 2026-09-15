@@ -2,10 +2,16 @@
 Close Behavior
     Mobile: Phone Back → popstate → closeVideo()
     Desktop: Backdrop / Escape → closeVideo()
+
+Test Mobile Back on Desktop
+   1. Open Chrome, Press F12 → select a mobile device screen
+   2. Open the video player
+   3. Run history.back() in the Console
+   4. Player should close via popstate → closeVideo()
 ========================= */
 
-// Number of videos per page
-// const PAGE_SIZE = 20;
+
+/* Number of videos per page */
 const PAGE_SIZE = 14;
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
