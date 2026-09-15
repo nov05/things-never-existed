@@ -874,17 +874,39 @@ document.addEventListener("keydown", event => {
 ========================= */
 
 let touchStartX = 0;
+let touchStartY = 0;
+
 document.addEventListener("touchstart", event => {
     if (!isMobile || modal.classList.contains("open")) return;
-    touchStartX = event.changedTouches[0].clientX;
+    const touch = event.changedTouches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
 });
+
 document.addEventListener("touchend", event => {
     if (!isMobile || modal.classList.contains("open")) return;
-    const touchEndX = event.changedTouches[0].clientX;
-    const diffX = touchEndX - touchStartX;
+    const touch = event.changedTouches[0];
+    const diffX = touch.clientX - touchStartX;
+    const diffY = touch.clientY - touchStartY;
+    const absX = Math.abs(diffX);
+    const absY = Math.abs(diffY);
     const SWIPE_THRESHOLD = 50;
+    const DIRECTION_RATIO = 1.5;
+    /*
+     * 只有横向移动：
+     * 1. 超过 50px
+     * 2. 并且横向距离明显大于纵向距离
+     *
+     * 才判定为左右滑动。
+     */
+    if (
+        absX < SWIPE_THRESHOLD ||
+        absX <= absY * DIRECTION_RATIO
+    ) {
+        return;
+    }
     /* Swipe right → previous page */
-    if (diffX > SWIPE_THRESHOLD) {
+    if (diffX > 0) {
         if (currentPage > 1) {
             currentPage--;
             renderVideos();
@@ -892,7 +914,7 @@ document.addEventListener("touchend", event => {
         }
     }
     /* Swipe left → next page */
-    if (diffX < -SWIPE_THRESHOLD) {
+    else {
         const totalPages = Math.ceil(
             filteredVideos.length / PAGE_SIZE
         );
