@@ -1,3 +1,9 @@
+/* =========================
+Close Behavior
+    Mobile: Phone Back → popstate → closeVideo()
+    Desktop: Backdrop / Escape → closeVideo()
+========================= */
+
 // Number of videos per page
 // const PAGE_SIZE = 20;
 const PAGE_SIZE = 14;
@@ -11,9 +17,28 @@ let currentPage = 1;
 
 
 /* =========================
-   Keyboard Hint
+   Elements
 ========================= */
 
+const searchInput = document.getElementById("search");
+const seriesContainer = document.getElementById("series");
+const titleElement = document.getElementById("title");
+const videosContainer = document.getElementById("videos");
+const paginationContainer = document.getElementById("pagination");
+const modal = document.getElementById("video-modal");
+const playerContainer = document.getElementById("player-container");
+/* Mobile */
+// document.getElementById("mobile-player-close").addEventListener("click", closeVideo); // Close button
+// modal.addEventListener("touchstart", () => {
+//     console.log("👉 Mobile touch detected"); // Test mobile touch
+// });
+
+
+/* =========================
+   Event Listeners
+========================= */
+
+/* Keyboard Hint */
 document.addEventListener("DOMContentLoaded", () => {
     const keyboardHint = document.getElementById("keyboard-hint");
     if (!keyboardHint) return;
@@ -27,6 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("wheel", hideKeyboardHint, { once: true });
     document.addEventListener("touchstart", hideKeyboardHint, { once: true });
     document.addEventListener("keydown", hideKeyboardHint, { once: true });
+});
+
+/* Mobile Player Back Navigation */
+window.addEventListener("popstate", () => {
+    if (isMobile && modal.classList.contains("open")) {
+        closeVideo();
+    }
 });
 
 
@@ -54,21 +86,6 @@ window.onYouTubeIframeAPIReady = function () {
         pendingVideo = null;
     }
 };
-
-
-/* =========================
-   Elements
-========================= */
-
-const searchInput = document.getElementById("search");
-const seriesContainer = document.getElementById("series");
-const titleElement = document.getElementById("title");
-const videosContainer = document.getElementById("videos");
-const paginationContainer = document.getElementById("pagination");
-const modal = document.getElementById("video-modal");
-const playerContainer = document.getElementById("player-container");
-/* Mobile */
-document.getElementById("mobile-player-close").addEventListener("click", closeVideo);
 
 
 /* =========================
@@ -102,7 +119,6 @@ async function loadVideos() {
 
     } catch (error) {
         console.error("Failed to load videos:", error);
-
         videosContainer.innerHTML = `
       <div class="empty-state">
         Unable to load videos.
@@ -120,7 +136,6 @@ function getSeriesList() {
     const series = videos
         .map(video => String(video.series || "").trim())
         .filter(Boolean);
-
     // return [...new Set(series)];
     return [...new Set(series)].sort((a, b) =>
         a.localeCompare(b)
@@ -530,8 +545,11 @@ function openVideo(video) {
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+
     // createYouTubePlayer(video);
     if (isMobile) {
+        /* Mobile Player History */
+        history.pushState({ videoPlayer: true }, "");
         createMobileYouTubePlayer(video);
         document.getElementById("player-container").focus();
     } else {

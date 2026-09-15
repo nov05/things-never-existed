@@ -174,3 +174,10 @@ In `style.css`, display the central 9:16 area of the 16:9 YouTube thumbnail in a
 Fallback display
 
 <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/pic001/2026-09-11%2005_23_13-Greenshot.png" width=600>  
+
+## 👉 YouTube Player Controls Behavior 
+
+1. **When a video starts playing:** Controls are displayed.
+2. **While playing, after 3 seconds of inactivity:** Controls are hidden.
+3. **When the video is paused:** Controls are displayed and remain visible.
+4. **Single tap on the screen:** Controls toggle between visible and hidden.

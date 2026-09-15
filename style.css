@@ -649,22 +649,22 @@ footer {
         height: 100%;
     }
 
-    #mobile-player-close {
+    /* #mobile-player-close {
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        right: 29px;
+        right: 30px;
         bottom: 129px;
         z-index: 10;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border: 0;
         border-radius: 50%;
         background: rgba(0, 0, 0, 0.35);
         color: #fff;
         font-size: 28px;
-        padding-bottom: 4px;
+        padding-bottom: 5px;
         cursor: pointer;
-    }
+    } */
 }
