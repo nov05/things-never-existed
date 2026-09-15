@@ -870,6 +870,42 @@ document.addEventListener("keydown", event => {
 
 
 /* =========================
+   Mobile Swipe Page Navigation
+========================= */
+
+let touchStartX = 0;
+document.addEventListener("touchstart", event => {
+    if (!isMobile || modal.classList.contains("open")) return;
+    touchStartX = event.changedTouches[0].clientX;
+});
+document.addEventListener("touchend", event => {
+    if (!isMobile || modal.classList.contains("open")) return;
+    const touchEndX = event.changedTouches[0].clientX;
+    const diffX = touchEndX - touchStartX;
+    const SWIPE_THRESHOLD = 50;
+    /* Swipe right → previous page */
+    if (diffX > SWIPE_THRESHOLD) {
+        if (currentPage > 1) {
+            currentPage--;
+            renderVideos();
+            renderPagination();
+        }
+    }
+    /* Swipe left → next page */
+    if (diffX < -SWIPE_THRESHOLD) {
+        const totalPages = Math.ceil(
+            filteredVideos.length / PAGE_SIZE
+        );
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderVideos();
+            renderPagination();
+        }
+    }
+});
+
+
+/* =========================
    Start
 ========================= */
 
