@@ -895,8 +895,7 @@ document.addEventListener("touchend", event => {
     /*
      * 只有横向移动：
      * 1. 超过 50px
-     * 2. 并且横向距离明显大于纵向距离
-     *
+     * 2. 且横向距离明显大于纵向距离
      * 才判定为左右滑动。
      */
     if (
